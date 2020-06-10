@@ -59,21 +59,23 @@
         if ($('.slideshow').length > 0){
             $('.slideshow').append("<button class='slide-fullscreen-openBtn' onclick='openFullScreen()'><span class='fullscreen-label'>View in <br> Full Screen</span></button>");
         }
-
-        $('#homepage-splash').find('.items').slick({
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            autoplay: true,
-            autoplaySpeed: 8000,
-            infinite: true,
-            fade: true,
-            cssEase: 'linear',
-            dots: true,
-            arrows: true,
-            prevArrow: "<div class='slick-prev-splash'></div>",
-            nextArrow: "<div class='slick-next-splash'></div>",
-            accessibility: true,
-        });
+        
+        if ($('#homepage-splash').length > 0) {
+          $('#homepage-splash').find('.items').slick({
+              slidesToShow: 1,
+              slidesToScroll: 1,
+              autoplay: true,
+              autoplaySpeed: 8000,
+              infinite: true,
+              fade: true,
+              cssEase: 'linear',
+              dots: true,
+              arrows: true,
+              prevArrow: "<div class='slick-prev-splash'></div>",
+              nextArrow: "<div class='slick-next-splash'></div>",
+              accessibility: true,
+          });
+        }
 
     });
 })(jQuery);
