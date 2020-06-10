@@ -28,6 +28,7 @@ if ($itemCount % 2 == 1) {
         </div>
     <?php endif; ?>
     <?php if ($this->hasPages): ?>
+      <div class='cards'>
         <?php foreach($this->pages as $page): ?>
             <div class="card-compact">
                 <?php if ($page['hasEmbeddedBlocks'] && array_key_exists('representativeImage',$page['embeddedBlocks'])): ?>
@@ -36,5 +37,6 @@ if ($itemCount % 2 == 1) {
                 <h3><a href='<?php echo $page['o:url']; ?>'><?php echo $page['o:title']; ?></a></h3>
             </div>
         <?php endforeach; ?>
+      </div>
     <?php endif; ?>
 </div>
