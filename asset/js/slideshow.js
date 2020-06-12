@@ -55,9 +55,27 @@
         });
         
         
-        //fullscreen button, it checks for then adds a btn into dom with click event for fullscreen styling
+        
         if ($('.slideshow').length > 0){
+            //fullscreen button, it checks for then adds a btn into dom with click event for fullscreen styling
             $('.slideshow').append("<button class='slide-fullscreen-openBtn' onclick='openFullScreen()'><span class='fullscreen-label'>View in <br> Full Screen</span></button>");
+            
+            var slideshow = $('.slideshow');
+            
+            // Adds a .navHover class to the slideshow to assist UI styling
+            
+            $('.slick-arrow').each(function(){
+              $(this)
+                .on('mouseenter',function(){
+                  slideshow.addClass('navHover');
+                })
+                .on('mouseleave',function(){
+                  slideshow.removeClass('navHover');
+                })
+              
+            });
+            
+            
         }
         
         if ($('#homepage-splash').length > 0) {
