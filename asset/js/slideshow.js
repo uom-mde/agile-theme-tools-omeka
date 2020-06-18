@@ -79,7 +79,6 @@
         }
         
         if ($('#homepage-splash, .section-intro-splash').length > 0) {
-          console.log('yaaa');
           $('#homepage-splash, .section-intro-splash').find('.items').slick({
               slidesToShow: 1,
               slidesToScroll: 1,
