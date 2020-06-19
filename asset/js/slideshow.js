@@ -103,8 +103,8 @@
               cssEase: 'linear',
               dots: true,
               arrows: true,
-              prevArrow: "<div class='slick-prev-splash'></div>",
-              nextArrow: "<div class='slick-next-splash'></div>",
+              prevArrow: "<div class='slick-prev'></div>",
+              nextArrow: "<div class='slick-next'></div>",
               accessibility: true,
           });
         }
