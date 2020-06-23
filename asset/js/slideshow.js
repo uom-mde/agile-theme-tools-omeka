@@ -92,7 +92,7 @@
             
         }
         
-        if ($('#homepage-splash, .section-intro-splash').length > 0) {
+        if ($(['#homepage-splash', '.section-intro-splash']).length > 0) {
           $('#homepage-splash, .section-intro-splash').find('.items').slick({
               slidesToShow: 1,
               slidesToScroll: 1,
