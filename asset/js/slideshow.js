@@ -2,7 +2,7 @@
     $(document).ready(function() {
       
         $('.slideshow').each(function(){
-          var showDots = $(this).length == 1 ? true : false;
+          var showDots = $(this).length == 1 ? false : true;
 
            $(this).slick(
                {
