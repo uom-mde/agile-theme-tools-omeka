@@ -2,13 +2,15 @@
     $(document).ready(function() {
       
         $('.slideshow').each(function(){
+          var showDots = $(this).length == 1 ? true : false;
+
            $(this).slick(
                {
                    slidesToShow: 1,
                    slidesToScroll: 1,
                    autoplay: false,
                    autoplaySpeed: 8000,
-                   dots: true,
+                   dots: showDots,
                    adaptiveHeight: false,
                    accessibility: true,
                    prevArrow: "<div class='slick-prev'></div>",
