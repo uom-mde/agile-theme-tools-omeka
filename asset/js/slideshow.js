@@ -2,7 +2,7 @@
     $(document).ready(function() {
       
         $('.slideshow').each(function(){
-          var showDots = $(this).length == 1 ? false : true;
+          if ($(this).length == 1) return;
 
            $(this).slick(
                {
@@ -10,7 +10,7 @@
                    slidesToScroll: 1,
                    autoplay: false,
                    autoplaySpeed: 8000,
-                   dots: showDots,
+                   dots: true,
                    adaptiveHeight: false,
                    accessibility: true,
                    prevArrow: "<div class='slick-prev'></div>",
