@@ -1,0 +1,27 @@
+.responsive-embed.aspect16_9 p,
+.responsive-embed.aspect4_3 p {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+
+}
+
+.responsive-embed.aspect16_9 p {
+  padding-top: 56.25%;
+}
+
+.responsive-embed.aspect4_3 p {
+  padding-top: 75%;
+}
+
+.responsive-embed.aspect16_9 iframe,
+.responsive-embed.aspect4_3 iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}

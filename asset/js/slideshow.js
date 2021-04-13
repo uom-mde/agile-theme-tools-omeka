@@ -3,7 +3,7 @@
       
         $('.slideshow').each(function(){
           if ($(this).length == 1) return;
-
+          
            $(this).slick(
                {
                    slidesToShow: 1,
