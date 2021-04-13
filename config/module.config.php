@@ -22,6 +22,7 @@
               'sectionPageListing' => Service\BlockLayout\SectionPageListingFactory::class,
               'homepageSplash' => Service\BlockLayout\HomepageSplashFactory::class,
               'sectionIntroSplash' => Service\BlockLayout\SectionIntroSplashFactory::class,
+              'responsiveEmbed' => Service\BlockLayout\ResponsiveEmbedFactory::class,
           ]
       ],
       'form_elements' => [
