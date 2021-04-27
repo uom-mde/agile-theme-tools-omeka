@@ -91,9 +91,10 @@ class ResponsiveEmbed extends AbstractBlockLayout
 
         $data = $block->data();
         
-        // remove the height and width from the iFrame
+        // remove the height, width, and style attributes from the iFrame
         $editedEmbed = preg_replace('/width="\d+"/','', $data['html']);
         $editedEmbed = preg_replace('/height="\d+"/','', $editedEmbed);
+        $editedEmbed = preg_replace('/style="[^"]*"/','', $editedEmbed);
         
         list($scope,$region) = explode(':',$data['region']);
         return $view->partial(
