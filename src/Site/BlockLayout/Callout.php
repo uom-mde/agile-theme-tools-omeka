@@ -6,11 +6,11 @@ use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Api\Representation\SitePageRepresentation;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
 use Omeka\Stdlib\HtmlPurifier;
-use Zend\Form\Element\Textarea;
-use Zend\Form\FormElementManager\FormElementManagerV3Polyfill as FormElementManager;
-use Zend\View\Renderer\PhpRenderer;
+use Laminas\Form\Element\Textarea;
+use Laminas\Form\FormElementManager\FormElementManagerV3Polyfill as FormElementManager;
+use Laminas\View\Renderer\PhpRenderer;
 use AgileThemeTools\Form\Element\RegionMenuSelect;
-use Zend\Form\Element\Text;
+use Laminas\Form\Element\Text;
 use Omeka\Stdlib\ErrorStore;
 use Omeka\Entity\SitePageBlock;
 

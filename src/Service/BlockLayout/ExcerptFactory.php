@@ -3,7 +3,7 @@ namespace AgileThemeTools\Service\BlockLayout;
 
 use AgileThemeTools\Site\BlockLayout\Excerpt;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class ExcerptFactory implements FactoryInterface
 {

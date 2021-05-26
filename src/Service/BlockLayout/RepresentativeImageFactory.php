@@ -6,7 +6,7 @@ use AgileThemeTools\Site\BlockLayout\RegionalHtml;
 use AgileThemeTools\Site\BlockLayout\RepresentativeImage;
 use AgileThemeTools\Site\BlockLayout\Slideshow;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class RepresentativeImageFactory implements FactoryInterface
 {

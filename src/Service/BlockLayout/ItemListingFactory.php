@@ -4,7 +4,7 @@ namespace AgileThemeTools\Service\BlockLayout;
 use AgileThemeTools\Site\BlockLayout\ItemListing;
 use Interop\Container\ContainerInterface;
 use Omeka\Stdlib\ErrorStore;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class ItemListingFactory implements FactoryInterface
 {
