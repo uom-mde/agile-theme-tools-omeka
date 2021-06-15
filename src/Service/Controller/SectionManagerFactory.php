@@ -4,8 +4,8 @@ namespace AgileThemeTools\Service\Controller;
 
 use AgileThemeTools\Controller\SectionManager;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\EventManager\EventManager;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\EventManager\EventManager;
 use Omeka\Api\Representation\SiteRepresentation;
 
 class SectionManagerFactory implements FactoryInterface

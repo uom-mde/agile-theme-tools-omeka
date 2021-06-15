@@ -7,13 +7,13 @@ use Omeka\Site\BlockLayout\AbstractBlockLayout;
 use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Api\Representation\SitePageRepresentation;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
-use Zend\Form\FormElementManager\FormElementManagerV3Polyfill as FormElementManager;
+use Laminas\Form\FormElementManager\FormElementManagerV3Polyfill as FormElementManager;
 use Omeka\Entity\SitePageBlock;
 use Omeka\Stdlib\HtmlPurifier;
 use Omeka\Stdlib\ErrorStore;
-use Zend\Form\Element\Textarea;
-use Zend\Form\Element\Select;
-use Zend\View\Renderer\PhpRenderer;
+use Laminas\Form\Element\Textarea;
+use Laminas\Form\Element\Select;
+use Laminas\View\Renderer\PhpRenderer;
 
 class Excerpt extends AbstractBlockLayout
 {

@@ -3,7 +3,7 @@ namespace AgileThemeTools\Service\BlockLayout;
 
 use AgileThemeTools\Site\BlockLayout\Deck;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class DeckFactory implements FactoryInterface
 {

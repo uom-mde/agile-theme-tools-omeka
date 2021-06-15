@@ -3,7 +3,7 @@ namespace AgileThemeTools\Service\BlockLayout;
 
 use AgileThemeTools\Site\BlockLayout\ResponsiveEmbed;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class ResponsiveEmbedFactory implements FactoryInterface
 {

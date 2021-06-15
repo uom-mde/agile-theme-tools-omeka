@@ -3,7 +3,7 @@ namespace AgileThemeTools\Service\Form\Element;
 
 use AgileThemeTools\Form\Element\SectionsMenuSelect;
 use Omeka\Form\Element\ResourceSelect;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 use AgileThemeTools\Controller\SectionManager;
 

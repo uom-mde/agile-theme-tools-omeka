@@ -4,7 +4,7 @@ namespace AgileThemeTools\Service\BlockLayout;
 
 use AgileThemeTools\Controller\SectionManager;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use AgileThemeTools\Site\BlockLayout\SectionPageListing;
 use Omeka\Stdlib\ErrorStore;
 

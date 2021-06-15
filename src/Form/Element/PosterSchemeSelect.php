@@ -2,7 +2,7 @@
 
 namespace AgileThemeTools\Form\Element;
 
-use Zend\Form\Element\Select;
+use Laminas\Form\Element\Select;
 
 class PosterSchemeSelect extends Select {
 
