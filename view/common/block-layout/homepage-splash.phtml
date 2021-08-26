@@ -1,4 +1,4 @@
-<div id="homepage-splash" class="foobar block-<?php echo $this->blockId; ?> region <?php echo $this->regionClass; ?>" data-target-region-id="<?php echo $this->targetID; ?>">
+<div id="homepage-splash" class="block-<?php echo $this->blockId; ?> region <?php echo $this->regionClass; ?>" data-target-region-id="<?php echo $this->targetID; ?>">
     <div class="items">
         <?php foreach ($attachments as $attachment): ?>
             <?php
@@ -9,7 +9,7 @@
                     $title = $this->plugin('escapeHtml')($item->displayTitle());
                     $media = $attachment->media() ?: $item->primaryMedia();
                     if ($media):
-                    $image = preg_match('/alt=""/', $this->thumbnail($media, $this->thumbnailType)) == 1 ? $item->linkRaw($this->thumbnail($media, $this->thumbnailType, ['alt' => $title])) : $item->linkRaw($this->thumbnail($media, $this->thumbnailType, ['alt' => 'foo']));
+                        $image = preg_match('/alt=""/', $this->thumbnail($media, $this->thumbnailType)) == 1 ? $item->linkRaw($this->thumbnail($media, $this->thumbnailType, ['alt' => $title])) : $item->linkRaw($this->thumbnail($media, $this->thumbnailType, ['alt' => 'foo']));
                 ?>
                         <figure>
                             <?php echo $image; ?>
