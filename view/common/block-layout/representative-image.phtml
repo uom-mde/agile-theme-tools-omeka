@@ -4,7 +4,10 @@ $item = $attachment->item();
 $media = null;
 
 if ($item) {
+    $title = $this->plugin('escapeHtml')($item->displayTitle());
     $media = $attachment->media() ?: $item->primaryMedia();
+    $image = preg_match('/alt=""/', $this->thumbnail($media, $this->thumbnailType)) == 1 ? $item->linkRaw($this->thumbnail($media, $this->thumbnailType, ['alt' => $title])) : $item->linkRaw($this->thumbnail($media, $this->thumbnailType));
+
 }
 
 $caption = $attachment->caption();
@@ -16,7 +19,7 @@ $caption = $attachment->caption();
                 <?php if (isset($this->block->page_title) && isset($this->block->page_url)): ?>
                   <?php printf('<a href="%s" title="Visit %s">%s</a>',$this->block->page_url, $this->block->page_title, $this->thumbnail($media,$thumbnailType));  ?>
                 <?php else: ?>
-                  <?php echo $item->linkRaw($this->thumbnail($media,$thumbnailType)); ?>
+                  <?php echo $image; ?>
                 <?php endif; ?>
                 <?php if ($caption): ?>
                     <figcaption><?php echo $caption; ?></figcaption>

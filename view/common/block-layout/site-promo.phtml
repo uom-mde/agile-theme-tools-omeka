@@ -6,11 +6,13 @@
             ?>
             <div class="site-image">
                 <?php if ($item):
+                    $title = $this->plugin('escapeHtml')($item->displayTitle());
                     $media = $attachment->media() ?: $item->primaryMedia();
                     if ($media):
+                    $image = preg_match('/alt=""/', $this->thumbnail($media, 'medium')) == 1 ? $this->thumbnail($media, 'medium', ['alt' => $title]) : $this->thumbnail($media, 'medium');
                 ?>
                         <figure>
-                            <?php echo $this->thumbnail($media,'medium'); ?>
+                            <?php echo $image; ?>
                             <?php if ($attachment->caption()): ?>
                               <figcaption><?php echo $attachment->caption(); ?></figcaption>
                             <?php endif; ?>
