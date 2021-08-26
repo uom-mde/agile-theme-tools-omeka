@@ -1,0 +1,10 @@
+<div class="field">
+    <div class="field-meta"><label for="site-select"><?php echo $this->translate('Choose a Site'); ?></label></div>
+    <div class="inputs"><?php echo $this->sitelist ?></div>
+</div>
+<?php echo $this->htmlform ?>
+<?php echo $this->attachment ?>
+<a href="#" class="collapse" aria-label="collapse"><h4><?php echo $this->translate('Region'); ?></h4></a>
+<div class="collapsible">
+    <?php echo $this->regionform ?>
+</div>
