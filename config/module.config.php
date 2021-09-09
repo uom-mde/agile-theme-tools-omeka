@@ -23,6 +23,7 @@
               'homepageSplash' => Service\BlockLayout\HomepageSplashFactory::class,
               'sectionIntroSplash' => Service\BlockLayout\SectionIntroSplashFactory::class,
               'responsiveEmbed' => Service\BlockLayout\ResponsiveEmbedFactory::class,
+              'sitePromo' => Service\BlockLayout\SitePromoFactory::class,
           ]
       ],
       'form_elements' => [
