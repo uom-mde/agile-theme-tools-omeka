@@ -21,7 +21,7 @@
                 <?php endif; ?>
             </div>
         <?php endforeach; ?>
-        <h2><a href="<?php echo $this->siteSelectLink; ?>"><?php echo $this->siteSelectTitle; ?></a></h2>
+        <h2><a href="<?php echo $_SERVER['REDIRECT_BASE'] . '/s/' . $this->siteSelectLink; ?>"><?php echo $this->siteSelectTitle; ?></a></h2>
         <?php echo $this->html; ?>
     </div>
 </div>
