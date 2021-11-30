@@ -52,20 +52,20 @@ class SitePromo extends AbstractBlockLayout
         $textarea = new Textarea("o:block[__blockIndex__][o:data][html]");
         $textarea->setAttribute('class', 'block-html full wysiwyg');
         $textarea->setAttribute('rows',20);
-        
+
         $data['sort_by'] = 'title';
         $response = $view->api()->search('sites', $data);
         $sites = $response->getContent();
 
         $siteList = array();
         foreach($sites as $site) {
-            $siteList[$site->siteUrl() . '|' . $site->title()] = $site->title();
+            $siteList[$site->slug() . '|' . $site->title()] = $site->title();
         }
 
         $siteSelectedOption = $block ? $block->dataValue('show_site_select_option', '') : '';
         $siteSelect = new Select('o:block[__blockIndex__][o:data][show_site_select_option]');
         $siteSelect->setValueOptions($siteList)->setValue($siteSelectedOption);
-        
+
         $region = new RegionMenuSelect();
 
         if ($block) {
@@ -97,8 +97,8 @@ class SitePromo extends AbstractBlockLayout
 
         $data = $block->data();
         $link_and_title = explode("|", $data['show_site_select_option']);
-        
         list($scope,$region) = explode(':',$data['region']);
+        $siteBaseUrl = $view->basePath() . '/s/';
         return $view->partial(
             'common/block-layout/site-promo',
             [
@@ -108,12 +108,11 @@ class SitePromo extends AbstractBlockLayout
                 'targetID' => '#' . $region,
                 'siteSelectLink' => $link_and_title[0],
                 'siteSelectTitle' => $link_and_title[1],
-                'attachments' => $block->attachments()
+                'attachments' => $block->attachments(),
+                'baseUrl' => $siteBaseUrl
             ]
         );
     }
 
 
 }
-
-
