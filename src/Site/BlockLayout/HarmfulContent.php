@@ -50,7 +50,7 @@ class HarmfulContent extends AbstractBlockLayout
         $textarea = new Textarea("o:block[__blockIndex__][o:data][harmful_content]");
         $textarea->setAttribute('class', 'block-html full wysiwyg');
         $textarea->setAttribute('rows',20);
-        $textarea->setOptions(['info', 'foobar']);
+        $textarea->setAttribute('placeholder', 'Add a harmful content statement or link to a harmful content statement. Typically placed at the top of the page.');
         $textarea->setLabel('Harmful Content Statement');
 
         if ($block) {
