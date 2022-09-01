@@ -20,6 +20,7 @@
               'quotation' => Service\BlockLayout\QuotationFactory::class,
               'deck' => Service\BlockLayout\DeckFactory::class,
               'sectionPageListing' => Service\BlockLayout\SectionPageListingFactory::class,
+              'harmfulContent' => Service\BlockLayout\HarmfulContentFactory::class,
               'homepageSplash' => Service\BlockLayout\HomepageSplashFactory::class,
               'sectionIntroSplash' => Service\BlockLayout\SectionIntroSplashFactory::class,
               'responsiveEmbed' => Service\BlockLayout\ResponsiveEmbedFactory::class,
