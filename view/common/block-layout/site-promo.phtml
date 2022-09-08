@@ -22,6 +22,21 @@
             </div>
         <?php endforeach; ?>
         <h2><a href="<?php echo $this->baseUrl . $this->siteSelectLink; ?>"><?php echo $this->siteSelectTitle; ?></a></h2>
+        <?php if($this->containsHarmfulContent == 1): ?>
+            <div class="site-promo-harmful-content-flag">
+                <p>May contain harmful content</p>
+            </div>
+        <?php endif; ?>
         <?php echo $this->html; ?>
+        <?php if($this->containsHarmfulContent == 1): ?>
+            <div class="site-promo-harmful-content">
+                <?php echo $this->themeSetting('harmful_content'); ?>
+                <?php if ($this->themeSetting('harmful_content') && strlen($this->themeSetting('harmful_content')) > 0): ?>
+                    <p>May contain harmful content. <?php echo $this->harmfulContent; ?></p>
+                <?php else: ?>
+                    <p>May contain harmful content.</p>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
     </div>
 </div>

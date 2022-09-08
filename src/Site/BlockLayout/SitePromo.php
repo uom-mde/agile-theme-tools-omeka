@@ -6,6 +6,7 @@ use Omeka\Site\BlockLayout\AbstractBlockLayout;
 use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Api\Representation\SitePageRepresentation;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
+use Laminas\Form\Element\Checkbox;
 use Laminas\Form\FormElementManager\FormElementManagerV3Polyfill as FormElementManager;
 use Omeka\Entity\SitePageBlock;
 use Omeka\Stdlib\HtmlPurifier;
@@ -66,11 +67,15 @@ class SitePromo extends AbstractBlockLayout
         $siteSelect = new Select('o:block[__blockIndex__][o:data][show_site_select_option]');
         $siteSelect->setValueOptions($siteList)->setValue($siteSelectedOption);
 
+        $siteContainsHarmfulContent = new Checkbox("o:block[__blockIndex__][o:data][contains_harmful_content]");
+        $siteContainsHarmfulContent->setLabel('Contains Harmful Content?');
+
         $region = new RegionMenuSelect();
 
         if ($block) {
             $textarea->setAttribute('value', $block->dataValue('html'));
             $region->setAttribute('value', $block->dataValue('region'));
+            $siteContainsHarmfulContent->setAttribute('value', $block->dataValue('contains_harmful_content'));
         }
 
         return $view->partial(
@@ -79,6 +84,7 @@ class SitePromo extends AbstractBlockLayout
                 'htmlform' => $view->formRow($textarea),
                 'regionform' => $view->formRow($region),
                 'sitelist' => $view->formRow($siteSelect),
+                'containsHarmfulContent' => $view->formRow($siteContainsHarmfulContent),
                 'attachment' => $view->blockAttachmentsForm($block),
                 'data' => $block ? $block->data() : []
             ]
@@ -108,6 +114,7 @@ class SitePromo extends AbstractBlockLayout
                 'targetID' => '#' . $region,
                 'siteSelectLink' => $link_and_title[0],
                 'siteSelectTitle' => $link_and_title[1],
+                'containsHarmfulContent' => $data['contains_harmful_content'],
                 'attachments' => $block->attachments(),
                 'baseUrl' => $siteBaseUrl
             ]
