@@ -4,7 +4,7 @@
         $('.slideshow').each(function(){
           if ($(this).length == 1) return;
           
-           $(this).slick(
+           $(this).not('.slick-initalized').slick(
                {
                    slidesToShow: 1,
                    slidesToScroll: 1,
@@ -95,7 +95,7 @@
         }
         
         if ($(['#homepage-splash', '.section-intro-splash']).length > 0) {
-          $('#homepage-splash, .section-intro-splash').find('.items').slick({
+          $('#homepage-splash, .section-intro-splash').find('.items').not('.slick-initalized').slick({
               slidesToShow: 1,
               slidesToScroll: 1,
               autoplay: true,
