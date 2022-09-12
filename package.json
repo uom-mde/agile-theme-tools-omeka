@@ -16,7 +16,7 @@
     "omeka-s"
   ],
   "dependencies": {
-    "slick-carousel": "^1.8.1"
+    "@accessible360/accessible-slick": "^1.0"
   },
   "browserslist": [
     "> 5%",

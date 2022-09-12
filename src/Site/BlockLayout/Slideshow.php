@@ -79,8 +79,9 @@ class Slideshow extends AbstractBlockLayout
 
     public function prepareRender(PhpRenderer $view)
     {
-        $view->headLink()->appendStylesheet($view->basePath('modules/AgileThemeTools/node_modules/slick-carousel/slick/slick.css'));
-        $view->headScript()->appendFile($view->basePath('modules/AgileThemeTools/node_modules/slick-carousel/slick/slick.min.js'));
+        $view->headLink()->appendStylesheet($view->basePath('modules/AgileThemeTools/node_modules/@accessible360/accessible-slick/slick/accessible-slick-theme.min.css'));
+        $view->headLink()->appendStylesheet($view->basePath('modules/AgileThemeTools/node_modules/@accessible360/accessible-slick/slick/slick.min.css'));
+        $view->headScript()->appendFile($view->basePath('modules/AgileThemeTools/node_modules/@accessible360/accessible-slick/slick/slick.min.js'));
         $view->headScript()->appendFile($view->assetUrl('js/slideshow.js', 'AgileThemeTools'));
         $view->headScript()->appendFile($view->assetUrl('js/regional_html_handler.js', 'AgileThemeTools'));
     }
