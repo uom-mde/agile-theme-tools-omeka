@@ -23,8 +23,10 @@ class Module extends AbstractModule
     }
     
     public function upgrade($oldVersion, $newVersion, ServiceLocatorInterface $serviceLocator) {
-        $conn = $serviceLocator->get('Omeka\Connection');
-        $conn->exec('UPDATE media, alt_text SET media.alt_text = alt_text.alt_text WHERE media.id = alt_text.media_id');
+        if (version_compare($oldVersion, '1.1.0', '<')) {
+            $conn = $serviceLocator->get('Omeka\Connection');
+            $conn->exec('UPDATE media, alt_text SET media.alt_text = alt_text.alt_text WHERE media.id = alt_text.media_id');
+        }
     }
     
     // Code borrowed from the AltText module (with thanks!). Substitutes dc:description if no Alt tag provided.
