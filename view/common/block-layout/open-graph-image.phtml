@@ -1,0 +1,15 @@
+<?php
+  $item = $attachment->item();
+  $thumbSize = $thumbnailType;
+  $media = null;
+
+  if ($item) {
+    $media = $attachment->media() ?: $item->primaryMedia();
+    if ($media) {
+      $altText = $media->altText() == null ? $item->displayTitle() : $media->altText();
+      $this->headMeta()->appendProperty('og:image', $media->thumbnailUrl($thumbSize));
+      $this->headMeta()->appendProperty('og:image:alt', $altText);
+    }
+  }
+?>
+<?php echo $media->thumbnailUrl($thumbSize); ?>

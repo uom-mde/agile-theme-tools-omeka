@@ -13,6 +13,7 @@
               'regionalHtml' => Service\BlockLayout\RegionalHtmlFactory::class,
               'byline' => Service\BlockLayout\BylineFactory::class,
               'representativeImage' => Service\BlockLayout\RepresentativeImageFactory::class,
+              'openGraphImage' => Service\BlockLayout\OpenGraphImageFactory::class,
               'slideshow' => Service\BlockLayout\SlideshowFactory::class,
               'poster' => Service\BlockLayout\PosterFactory::class,
               'itemListing' => Service\BlockLayout\ItemListingFactory::class,

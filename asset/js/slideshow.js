@@ -8,7 +8,7 @@
                {
                    slidesToShow: 1,
                    slidesToScroll: 1,
-                   autoplay: false,
+                   autoplay: true,
                    autoplaySpeed: 8000,
                    dots: true,
                    adaptiveHeight: false,
