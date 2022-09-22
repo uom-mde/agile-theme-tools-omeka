@@ -98,7 +98,7 @@ class Slideshow extends AbstractBlockLayout
         $showTitleOption = $block->dataValue('show_title_option', 'item_title');
         list($scope,$region) = explode(':',$data['region']);
         $thumbnailType = 'large'; 
-
+        $allowedMediaTypes = ['image', 'pdf'];
         $image_attachments = [];
         $audio_attachment = null;
 
@@ -109,10 +109,12 @@ class Slideshow extends AbstractBlockLayout
             // Filter for media type. $media->mediaType() returns a MIME type.
 
             if ($media) {
-                if (strpos($media->mediaType(),'image') !== false) {
-                    $image_attachments[] = $attachment;
-                } elseif (strpos($media->mediaType(),'audio') !== false && $audio_attachment == null) {
-                    $audio_attachment = $attachment;
+                foreach ($allowedMediaTypes as $allowedMediaType) {
+                    if (strpos($media->mediaType(),$allowedMediaType) !== false) {
+                        $image_attachments[] = $attachment;
+                    } elseif (strpos($media->mediaType(),'audio') !== false && $audio_attachment == null) {
+                        $audio_attachment = $attachment;
+                    }
                 }
             }
         }

@@ -2,25 +2,24 @@
     $(document).ready(function() {
       
         $('.slideshow').each(function(){
-          if ($(this).length == 1) return;
-          
-           $(this).not('.slick-initalized').slick(
-               {
-                   slidesToShow: 1,
-                   slidesToScroll: 1,
-                   autoplay: true,
-                   autoplaySpeed: 8000,
-                   dots: true,
-                   adaptiveHeight: false,
-                   accessibility: true,
-                   prevArrow: "<div class='slick-prev'></div>",
-                   nextArrow: "<div class='slick-next'></div>",
-                   accessibility: true,
-                   focusOnSelect: true,
-                   fade: true,
-                   cssEase: 'linear',
-               }
-           );
+          if ($(this).find('.item').length < 1) return;
+          $(this).not('.slick-initalized').slick(
+              {
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 8000,
+                dots: true,
+                adaptiveHeight: false,
+                accessibility: true,
+                prevArrow: "<div class='slick-prev'></div>",
+                nextArrow: "<div class='slick-next'></div>",
+                accessibility: true,
+                focusOnSelect: true,
+                fade: true,
+                cssEase: 'linear',
+            }
+          );
         });
 
         $('.slideshow-with-audio').each(function(){
@@ -62,8 +61,8 @@
           var slideshow1 =  $('.slideshow')[0];
           var slideshow2 = $('.slideshow')[1];
             //fullscreen button, it checks for then adds a btn into dom with click event for fullscreen styling
-            $(slideshow1).append("<button class='slide-fullscreen-openBtn' onclick='openFullScreen()'><span class='fullscreen-label'>View in <br> Full Screen</span></button>");
-            $(slideshow2).append("<button class='slide-fullscreen-openBtn' onclick='openFullScreen2()'><span class='fullscreen-label'>View in <br> Full Screen</span></button>");
+            $(slideshow1).append("<span class='fullscreen-wrapper'><button class='slide-fullscreen-openBtn' onclick='openFullScreen()'><span class='fullscreen-label'>View in <br> Full Screen</span></button></span>");
+            $(slideshow2).append("<span class='fullscreen-wrapper'><button class='slide-fullscreen-openBtn' onclick='openFullScreen2()'><span class='fullscreen-label'>View in <br> Full Screen</span></button></span>");
 
             var slideshow = $(slideshow1);
             var secondSlideshow = $(slideshow2);
