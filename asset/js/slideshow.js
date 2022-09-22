@@ -11,7 +11,6 @@
                 autoplaySpeed: 8000,
                 dots: true,
                 adaptiveHeight: false,
-                accessibility: true,
                 prevArrow: "<div class='slick-prev'></div>",
                 nextArrow: "<div class='slick-next'></div>",
                 accessibility: true,

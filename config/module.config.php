@@ -26,6 +26,17 @@
                         ]
                     ] 
             */
+            '16x9' => [
+                'strategy' => 'custom',
+                'constraint' => [
+                    'constraint_x' => 1440, 
+                    'constraint_y' => 810
+                ],
+                'options' => [
+                    'gravity' => 'center', 
+                    'crop' => true
+                ]
+            ],
             'og_image' => [
                 'strategy' => 'custom',
                 'constraint' => [
