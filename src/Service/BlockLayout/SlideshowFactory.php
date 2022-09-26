@@ -18,6 +18,7 @@ class SlideshowFactory implements FactoryInterface
     {
         $htmlPurifier = $serviceLocator->get('Omeka\HtmlPurifier');
         $formElementManager = $serviceLocator->get('FormElementManager');
-        return new Slideshow($htmlPurifier,$formElementManager);
+        $thumbnailManager = $serviceLocator->get('Omeka\File\ThumbnailManager');
+        return new Slideshow($htmlPurifier,$formElementManager,$thumbnailManager);
     }
 }

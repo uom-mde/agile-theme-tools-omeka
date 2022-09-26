@@ -7,6 +7,7 @@ use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Api\Representation\SitePageRepresentation;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
 use Laminas\Form\FormElementManager\FormElementManagerV3Polyfill as FormElementManager;
+use Omeka\File\ThumbnailManager as ThumbnailManager;
 use Omeka\Entity\SitePageBlock;
 use Omeka\Stdlib\HtmlPurifier;
 use Omeka\Stdlib\ErrorStore;
@@ -25,11 +26,16 @@ class Slideshow extends AbstractBlockLayout
      * @var FormElementManager
      */
     protected $formElementManager;
+    /**
+     * @var ThumbnailManager
+     */
+    protected $thumbnailManager;
 
-    public function __construct(HtmlPurifier $htmlPurifier, FormElementManager $formElementManager)
+    public function __construct(HtmlPurifier $htmlPurifier, FormElementManager $formElementManager, ThumbnailManager $thumbnailManager)
     {
         $this->htmlPurifier = $htmlPurifier;
         $this->formElementManager = $formElementManager;
+        $this->thumbnailManager = $thumbnailManager;
     }
 
     public function getLabel()
@@ -97,7 +103,7 @@ class Slideshow extends AbstractBlockLayout
         $data = $block->data();
         $showTitleOption = $block->dataValue('show_title_option', 'item_title');
         list($scope,$region) = explode(':',$data['region']);
-        $thumbnailType = 'large'; 
+        $thumbnailType = $this->thumbnailManager->typeExists('16x9') ? '16x9' : 'medium'; 
         $allowedMediaTypes = ['image', 'pdf'];
         $image_attachments = [];
         $audio_attachment = null;

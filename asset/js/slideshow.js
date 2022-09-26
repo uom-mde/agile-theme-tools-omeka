@@ -89,14 +89,34 @@
               
             });
             
-            
         }
-        
-        if ($(['#homepage-splash', '.section-intro-splash']).length > 0) {
-          $('#homepage-splash, .section-intro-splash').find('.items').not('.slick-initalized').slick({
+
+        console.log($('.section-intro-splash').find('.item').length)
+        $.each(['#homepage-splash', '.section-intro-splash'], function(idx, val) {
+          console.log(val)
+          console.log($(val).find('.items .item').length)
+          if ($(val).find('.items .item').length > 1) {
+            $(val).find('.items').not('.slick-initalized').slick({
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 8000,
+                infinite: true,
+                fade: true,
+                cssEase: 'linear',
+                dots: true,
+                arrows: true,
+                prevArrow: "<div class='slick-prev'></div>",
+                nextArrow: "<div class='slick-next'></div>",
+                accessibility: true,
+            });
+          }
+          else {
+            $(val).find('.items').addClass('single-carousel');
+            $(val).find('.items').not('.slick-initalized').slick({
               slidesToShow: 1,
               slidesToScroll: 1,
-              autoplay: true,
+              autoplay: false,
               autoplaySpeed: 8000,
               infinite: true,
               fade: true,
@@ -108,7 +128,7 @@
               accessibility: true,
           });
         }
-
+      });
     });
 })(jQuery);
 
