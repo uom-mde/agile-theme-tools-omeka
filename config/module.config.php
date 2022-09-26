@@ -41,7 +41,7 @@
                 'strategy' => 'custom',
                 'constraint' => [
                     'constraint_x' => 1200, 
-                    'constraint_y' => 600
+                    'constraint_y' => 630
                 ],
                 'options' => [
                     'gravity' => 'center', 
