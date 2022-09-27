@@ -79,6 +79,11 @@ class SectionIntroSplash extends AbstractBlockLayout
 
         $html = $view->formRow($title);
         $html .= $view->blockAttachmentsForm($block);
+        $html .= '<a href="#" class="collapse" aria-label="collapse"><h4>' . $view->translate('Image Sizing'). '</h4></a>';
+        foreach ($block->attachments() as $attachment) {
+            $html .= $view->blockThumbnailTypeSelect($block);
+        }
+        $html .= '</div>';
         $html .= '<a href="#" class="collapse" aria-label="collapse"><h4>' . $view->translate('Options'). '</h4></a>';
         $html .= '<div class="collapsible">';
         $html .= $view->formRow($introductionField);
@@ -106,7 +111,7 @@ class SectionIntroSplash extends AbstractBlockLayout
         }
 
         $data = $block->data();
-        $thumbnailType = 'large';
+        $thumbnailType = $block->dataValue('thumbnail_type', 'square');
         $showTitleOption = $block->dataValue('show_title_option', 'item_title');
         list($scope,$region) = explode(':',$data['region']);
 
