@@ -34,7 +34,7 @@ class Slideshow extends AbstractBlockLayout
     /**
      * @var array
      */
-    protected $thumbnailTypes;
+    protected $thumbnailObjectSizes;
     /**
      * @var array
      */
@@ -43,15 +43,20 @@ class Slideshow extends AbstractBlockLayout
      * @var array
      */
     protected $thumbnailObjectPositions;
+    /**
+     * @var array
+     */
+    protected $attachmentOptions;
 
     public function __construct(HtmlPurifier $htmlPurifier, FormElementManager $formElementManager, ThumbnailManager $thumbnailManager)
     {
         $this->htmlPurifier = $htmlPurifier;
         $this->formElementManager = $formElementManager;
         $this->thumbnailManager = $thumbnailManager;
-        $this->thumbnailTypes = $this->thumbnailManager->getTypes();
+        $this->thumbnailObjectSizes = $this->thumbnailManager->getTypes();
         $this->thumbnailObjectFits = ['contain','cover'];
         $this->thumbnailObjectPositions = ['top','center','bottom'];
+        $this->attachmentOptions = ['size' => 0, 'fit' => 1, 'position' => 1];
     }
 
     public function getLabel()
@@ -110,27 +115,14 @@ class Slideshow extends AbstractBlockLayout
             $title = $item ? $item->displayTitle() : $key_name;
             $html .= '<h5>' . $view->translate('Options for attachment: <i>') . $title . '</i></h5>';
             $html .= '<div class="slideshow-refinements">';
-            $html .= '<div><div>' . $view->translate('Size') . '</div>';
-            ${'attachmentSizeSelectedOption' . $key} = $block ? $block->dataValue('attachment_size_select_option_' . $key, '') : '';
-            ${'attachmentSizeSelect' . $key} = new Select('o:block[__blockIndex__][o:data][attachment_size_select_option_' . $key . ']');
-            ${'attachmentSizeSelect' . $key}->setValueOptions($this->thumbnailTypes)->setValue(${'attachmentSizeSelectedOption' . $key});
-            $html .= $view->formRow(${'attachmentSizeSelect' . $key});
-            $html .= '</div>';
-
-            $html .= '<div><div>' . $view->translate('Attachment Fit') . '</div>';
-            ${'attachmentFitSelectedOption' . $key} = $block ? $block->dataValue('attachment_fit_select_option_' . $key, '') : '';
-            ${'attachmentFitSelect' . $key} = new Select('o:block[__blockIndex__][o:data][attachment_fit_select_option_' . $key . ']');
-            ${'attachmentFitSelect' . $key}->setValueOptions($this->thumbnailObjectFits)->setValue(${'attachmentFitSelectedOption' . $key});
-            $html .= $view->formRow(${'attachmentFitSelect' . $key});
-            $html .= '</div>';
-
-            $html .= '<div><div>' . $view->translate('Attachment Position') . '</div>';
-            ${'attachmentPositionSelectedOption' . $key} = $block ? $block->dataValue('attachment_position_select_option_' . $key, '') : '';
-            ${'attachmentPositionSelect' . $key} = new Select('o:block[__blockIndex__][o:data][attachment_position_select_option_' . $key . ']');
-            ${'attachmentPositionSelect' . $key}->setValueOptions($this->thumbnailObjectPositions)->setValue(${'attachmentPositionSelectedOption' . $key});
-            $html .= $view->formRow(${'attachmentPositionSelect' . $key});
-            $html .= '</div>';
-
+            foreach ($this->attachmentOptions as $option => $defaultVal) {
+                $html .= '<div><div>' . $view->translate(ucfirst($option)) . '</div>';
+                ${'attachment' . ucfirst($option) . 'SelectedOption' . $key} = $block ? $block->dataValue('attachment_' . $option . '_select_option_' . $key, '') : '';
+                ${'attachment' . ucfirst($option) . 'Select' . $key} = new Select('o:block[__blockIndex__][o:data][attachment_' . $option . '_select_option_' . $key . ']');
+                ${'attachment' . ucfirst($option) . 'Select' . $key}->setValueOptions($this->{'thumbnailObject' . ucfirst($option) . 's'})->setValue(${'attachment' . ucfirst($option) . 'SelectedOption' . $key});
+                $html .= $view->formRow(${'attachment' . ucfirst($option) . 'Select' . $key});
+                $html .= '</div>';
+            }
             $html .= '</div>';
         }
         $html .= '</div>';
@@ -163,17 +155,17 @@ class Slideshow extends AbstractBlockLayout
         $data = $block->data();
         $showTitleOption = $block->dataValue('show_title_option', 'item_title');
         list($scope,$region) = explode(':',$data['region']);
-        $attachmentSizing = [];
-        $attachmentFit = [];
-        $attachmentPosition = [];
+        foreach ($this->attachmentOptions as $option => $defaultVal) {
+            ${'attachment' . ucfirst($option)} = [];
+        }
         $allowedMediaTypes = ['image', 'pdf'];
         $image_attachments = [];
         $audio_attachment = null;
 
         foreach($attachments as $key => $attachment) {
-            array_push($attachmentSizing, $this->thumbnailTypes[$block->dataValue('attachment_size_select_option_' . $key, 0)]);
-            array_push($attachmentFit, $this->thumbnailObjectFits[$block->dataValue('attachment_fit_select_option_' . $key, 1)]);
-            array_push($attachmentPosition, $this->thumbnailObjectPositions[$block->dataValue('attachment_position_select_option_' . $key, 1)]);
+            foreach ($this->attachmentOptions as $option => $defaultVal) {
+                array_push(${'attachment' . ucfirst($option)}, $this->{'thumbnailObject' . ucfirst($option) . 's'}[$block->dataValue('attachment_' . $option . '_select_option_' . $key, $defaultVal)]);
+            }
 
             $item = $attachment->item();
             $media = $attachment->media() ?: $item->primaryMedia();
@@ -191,7 +183,7 @@ class Slideshow extends AbstractBlockLayout
             }
         }
 
-        return $view->partial('common/block-layout/slideshow', [
+        $renderValues = [
             'block' => $block,
             'useTitleSlide' => !empty($data['title']),
             'titleSlideAttachment' => $image_attachments[0],
@@ -200,15 +192,18 @@ class Slideshow extends AbstractBlockLayout
             'titleSlideTitle' => $data['title'],
             'titleSlideIntro' => $data['introduction'],
             'attachments' => $image_attachments,
-            'attachmentSizing' => $attachmentSizing,
-            'attachmentFit' => $attachmentFit,
-            'attachmentPosition' => $attachmentPosition,
             'showTitleOption' => $showTitleOption,
             'blockId' => $block->id(),
             'regionClass' => 'region-' . $region,
             'targetID' => '#' . $region,
             'hasAudioAttachment' => $audio_attachment != null,
             'audioAttachment' => $audio_attachment
-        ]);
+        ];
+
+        foreach ($this->attachmentOptions as $option => $defaultVal) {
+            $renderValues['attachment' . ucfirst($option)] = ${'attachment' . ucfirst($option)};
+        }
+
+        return $view->partial('common/block-layout/slideshow', $renderValues);
     }
 }
