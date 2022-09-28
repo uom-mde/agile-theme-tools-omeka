@@ -2,13 +2,14 @@
 namespace AgileThemeTools\Site\BlockLayout;
 
 use AgileThemeTools\Form\Element\RegionMenuSelect;
+use AgileThemeTools\Site\BlockLayout\SlideshowHelper;
 use Omeka\Site\BlockLayout\AbstractBlockLayout;
 use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Api\Representation\SitePageRepresentation;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
 use Laminas\Form\FormElementManager\FormElementManagerV3Polyfill as FormElementManager;
-use Omeka\File\ThumbnailManager as ThumbnailManager;
 use Omeka\Entity\SitePageBlock;
+use Omeka\File\ThumbnailManager as ThumbnailManager;
 use Omeka\Stdlib\HtmlPurifier;
 use Omeka\Stdlib\ErrorStore;
 use Laminas\Form\Element\Select;
@@ -27,36 +28,12 @@ class Slideshow extends AbstractBlockLayout
      * @var FormElementManager
      */
     protected $formElementManager;
-    /**
-     * @var ThumbnailManager
-     */
-    protected $thumbnailManager;
-    /**
-     * @var array
-     */
-    protected $thumbnailObjectSizes;
-    /**
-     * @var array
-     */
-    protected $thumbnailObjectFits;
-    /**
-     * @var array
-     */
-    protected $thumbnailObjectPositions;
-    /**
-     * @var array
-     */
-    protected $attachmentOptions;
 
     public function __construct(HtmlPurifier $htmlPurifier, FormElementManager $formElementManager, ThumbnailManager $thumbnailManager)
     {
         $this->htmlPurifier = $htmlPurifier;
         $this->formElementManager = $formElementManager;
-        $this->thumbnailManager = $thumbnailManager;
-        $this->thumbnailObjectSizes = $this->thumbnailManager->getTypes();
-        $this->thumbnailObjectFits = ['contain','cover'];
-        $this->thumbnailObjectPositions = ['top','center','bottom'];
-        $this->attachmentOptions = ['size' => 0, 'fit' => 1, 'position' => 1];
+        $this->slideshowHelper = new SlideshowHelper($thumbnailManager);
     }
 
     public function getLabel()
@@ -97,35 +74,12 @@ class Slideshow extends AbstractBlockLayout
 
         $html = $view->formRow($title);
         $html .= $view->blockAttachmentsForm($block);
-        $html .= '<a href="#" class="collapse" aria-label="collapse"><h4>' . $view->translate('Attachment Options'). '</h4></a>';
-        $html .= '<div class="collapsible slideshow-options">';
-        $html .= '<div>' 
-                 . $view->translate("The 'Attachment Fit' option controls how an image fits into the enclosing area. 
-                 See <a href='https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit'>Object Fit CSS</a> 
-                 for more information.") 
-                 . '</div>';
-        $html .= '<div>' 
-                 . $view->translate("The 'Attachment Position' option aligns the image inside the enclosing area.
-                 See <a href='https://developer.mozilla.org/en-US/docs/Web/CSS/object-position'>Object Position CSS</a> 
-                 for more information.") 
-                 . '</div>';
-        foreach ($block->attachments() as $key => $attachment) {
-            $item = $attachment->item();
-            $key_name = $key + 1;
-            $title = $item ? $item->displayTitle() : $key_name;
-            $html .= '<h5>' . $view->translate('Options for attachment: <i>') . $title . '</i></h5>';
-            $html .= '<div class="slideshow-refinements">';
-            foreach ($this->attachmentOptions as $option => $defaultVal) {
-                $html .= '<div><div>' . $view->translate(ucfirst($option)) . '</div>';
-                ${'attachment' . ucfirst($option) . 'SelectedOption' . $key} = $block ? $block->dataValue('attachment_' . $option . '_select_option_' . $key, '') : '';
-                ${'attachment' . ucfirst($option) . 'Select' . $key} = new Select('o:block[__blockIndex__][o:data][attachment_' . $option . '_select_option_' . $key . ']');
-                ${'attachment' . ucfirst($option) . 'Select' . $key}->setValueOptions($this->{'thumbnailObject' . ucfirst($option) . 's'})->setValue(${'attachment' . ucfirst($option) . 'SelectedOption' . $key});
-                $html .= $view->formRow(${'attachment' . ucfirst($option) . 'Select' . $key});
-                $html .= '</div>';
-            }
-            $html .= '</div>';
+        if ($block) {
+            $html .= $this->slideshowHelper->slideshow_options_form_html($view, $block);
         }
-        $html .= '</div>';
+        else {
+            $html .= '<div><b>Note:</b> After adding an attachment, save the page to see options for the attachment.</div>';
+        }
         $html .= '<a href="#" class="collapse" aria-label="collapse"><h4>' . $view->translate('Slideshow Options'). '</h4></a>';
         $html .= '<div class="collapsible">';
         $html .= $view->formRow($introductionField);
@@ -139,6 +93,7 @@ class Slideshow extends AbstractBlockLayout
     {
         $view->headLink()->appendStylesheet($view->basePath('modules/AgileThemeTools/node_modules/@accessible360/accessible-slick/slick/accessible-slick-theme.min.css'));
         $view->headLink()->appendStylesheet($view->basePath('modules/AgileThemeTools/node_modules/@accessible360/accessible-slick/slick/slick.min.css'));
+        $view->headLink()->appendStylesheet($view->assetUrl('css/agile_theme_tools_slideshow_options.css', 'AgileThemeTools'));
         $view->headScript()->appendFile($view->basePath('modules/AgileThemeTools/node_modules/@accessible360/accessible-slick/slick/slick.min.js'));
         $view->headScript()->appendFile($view->assetUrl('js/slideshow.js', 'AgileThemeTools'));
         $view->headScript()->appendFile($view->assetUrl('js/regional_html_handler.js', 'AgileThemeTools'));
@@ -148,6 +103,7 @@ class Slideshow extends AbstractBlockLayout
     public function render(PhpRenderer $view, SitePageBlockRepresentation $block)
     {
         $attachments = $block->attachments();
+        $this->slideshowHelper->attachment_values_init();
         if (!$attachments) {
             return '';
         }
@@ -155,18 +111,12 @@ class Slideshow extends AbstractBlockLayout
         $data = $block->data();
         $showTitleOption = $block->dataValue('show_title_option', 'item_title');
         list($scope,$region) = explode(':',$data['region']);
-        foreach ($this->attachmentOptions as $option => $defaultVal) {
-            ${'attachment' . ucfirst($option)} = [];
-        }
         $allowedMediaTypes = ['image', 'pdf'];
         $image_attachments = [];
         $audio_attachment = null;
 
         foreach($attachments as $key => $attachment) {
-            foreach ($this->attachmentOptions as $option => $defaultVal) {
-                array_push(${'attachment' . ucfirst($option)}, $this->{'thumbnailObject' . ucfirst($option) . 's'}[$block->dataValue('attachment_' . $option . '_select_option_' . $key, $defaultVal)]);
-            }
-
+            $this->slideshowHelper->attachment_values($block, $key);
             $item = $attachment->item();
             $media = $attachment->media() ?: $item->primaryMedia();
 
@@ -197,13 +147,12 @@ class Slideshow extends AbstractBlockLayout
             'regionClass' => 'region-' . $region,
             'targetID' => '#' . $region,
             'hasAudioAttachment' => $audio_attachment != null,
-            'audioAttachment' => $audio_attachment
+            'audioAttachment' => $audio_attachment,
+            'attachmentOptions' => $this->slideshowHelper->attachment_options(),
         ];
 
-        foreach ($this->attachmentOptions as $option => $defaultVal) {
-            $renderValues['attachment' . ucfirst($option)] = ${'attachment' . ucfirst($option)};
-        }
+        $attachment_render_values = $this->slideshowHelper->render_values();
 
-        return $view->partial('common/block-layout/slideshow', $renderValues);
+        return $view->partial('common/block-layout/slideshow', array_merge($renderValues, $attachment_render_values));
     }
 }

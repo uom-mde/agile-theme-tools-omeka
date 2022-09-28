@@ -3,11 +3,30 @@
       
         $('.slideshow').each(function(){
           if ($(this).find('.item').length < 1) return;
-          $(this).not('.slick-initalized').slick(
+          if ($(this).find('.item').length > 1) {
+            $(this).not('.slick-initalized').slick(
+                {
+                  slidesToShow: 1,
+                  slidesToScroll: 1,
+                  autoplay: true,
+                  autoplaySpeed: 8000,
+                  dots: true,
+                  adaptiveHeight: false,
+                  prevArrow: "<div class='slick-prev'></div>",
+                  nextArrow: "<div class='slick-next'></div>",
+                  accessibility: true,
+                  focusOnSelect: true,
+                  fade: true,
+                  cssEase: 'linear',
+              }
+            );
+          }
+          else {
+            $(this).not('.slick-initalized').slick(
               {
                 slidesToShow: 1,
                 slidesToScroll: 1,
-                autoplay: true,
+                autoplay: false,
                 autoplaySpeed: 8000,
                 dots: true,
                 adaptiveHeight: false,
@@ -19,6 +38,7 @@
                 cssEase: 'linear',
             }
           );
+          }
         });
 
         $('.slideshow-with-audio').each(function(){
@@ -91,10 +111,7 @@
             
         }
 
-        console.log($('.section-intro-splash').find('.item').length)
         $.each(['#homepage-splash', '.section-intro-splash'], function(idx, val) {
-          console.log(val)
-          console.log($(val).find('.items .item').length)
           if ($(val).find('.items .item').length > 1) {
             $(val).find('.items').not('.slick-initalized').slick({
                 slidesToShow: 1,

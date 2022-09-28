@@ -19,6 +19,7 @@ class HomepageSplashFactory implements FactoryInterface
     {
         $htmlPurifier = $serviceLocator->get('Omeka\HtmlPurifier');
         $formElementManager = $serviceLocator->get('FormElementManager');
-        return new HomepageSplash($htmlPurifier,$formElementManager);
+        $thumbnailManager = $serviceLocator->get('Omeka\File\ThumbnailManager');
+        return new HomepageSplash($htmlPurifier,$formElementManager,$thumbnailManager);
     }
 }

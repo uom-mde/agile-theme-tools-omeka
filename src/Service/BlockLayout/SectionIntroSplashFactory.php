@@ -20,6 +20,7 @@ class SectionIntroSplashFactory implements FactoryInterface
     {
         $htmlPurifier = $serviceLocator->get('Omeka\HtmlPurifier');
         $formElementManager = $serviceLocator->get('FormElementManager');
-        return new SectionIntroSplash($htmlPurifier,$formElementManager);
+        $thumbnailManager = $serviceLocator->get('Omeka\File\ThumbnailManager');
+        return new SectionIntroSplash($htmlPurifier,$formElementManager,$thumbnailManager);
     }
 }
