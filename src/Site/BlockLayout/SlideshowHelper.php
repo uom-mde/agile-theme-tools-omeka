@@ -22,7 +22,17 @@ use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class SlideshowHelper {
   const THUMBNAIL_FIT_OPTIONS = ['contain', 'cover'];
-  const THUMBNAIL_POSITION_OPTIONS = ['top', 'center', 'bottom'];
+  const THUMBNAIL_POSITION_OPTIONS = [
+    'top-center',
+    'center-center',
+    'bottom-center',
+    'top-left',
+    'center-left',
+    'bottom-left',
+    'top-right',
+    'center-right',
+    'bottom-right'
+  ];
   const ATTACHMENT_OPTIONS = ['size' => 0, 'fit' => 1, 'position' => 1];
 
   public function __construct($thumbnailManager) {
