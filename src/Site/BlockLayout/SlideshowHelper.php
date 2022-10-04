@@ -4,6 +4,7 @@ namespace AgileThemeTools\Site\BlockLayout;
 use AgileThemeTools\Form\Element\RegionMenuSelect;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
 use Omeka\File\ThumbnailManager;
+use Laminas\Form\Element\Number;
 use Laminas\Form\Element\Select;
 use Laminas\View\Renderer\PhpRenderer;
 use Laminas\ServiceManager\Factory\FactoryInterface;
@@ -67,6 +68,11 @@ class SlideshowHelper {
     }
   }
 
+  public function attachment_scale_values($scaleValues, $key) {
+    $scaleValues = preg_filter('/^/', 'transform: scale(', $scaleValues);
+    return preg_filter('/$/', '); transform-origin: ' . str_replace('-',' ', $this->attachmentPositionValue[$key]) . ';', $scaleValues);
+  }
+
   public function render_values() {
     $render_values = [];
     foreach ($this->attachment_options() as $option => $defaultVal) {
@@ -103,6 +109,17 @@ class SlideshowHelper {
             $html .= $view->formRow(${'attachment' . ucfirst($option) . 'Select' . $key});
             $html .= '</div>';
         }
+        ${'attachment_scale_' . $key} = new Number('o:block[__blockIndex__][o:data][attachment_scale_' . $key .']');
+        ${'attachment_scale_' . $key}->setValue($block ? $block->dataValue('attachment_scale_' . $key, 1) : 1);
+        ${'attachment_scale_' . $key}->setAttributes([
+          'min'  => '0.2',
+          'max'  => '5',
+          'step' => '0.1',
+        ]);
+
+        $html .= '<div><div>' . $view->translate('Scale') . '</div>';
+        $html .= $view->formRow(${'attachment_scale_' . $key});
+        $html .= '</div>';
         $html .= '</div>';
     }
     $html .= '</div>';

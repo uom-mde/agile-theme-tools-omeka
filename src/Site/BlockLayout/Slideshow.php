@@ -114,12 +114,13 @@ class Slideshow extends AbstractBlockLayout
         $allowedMediaTypes = ['image', 'pdf'];
         $image_attachments = [];
         $audio_attachment = null;
+        $attachment_scale_values = [];
 
         foreach($attachments as $key => $attachment) {
             $this->slideshowHelper->attachment_values($block, $key);
             $item = $attachment->item();
             $media = $attachment->media() ?: $item->primaryMedia();
-
+            array_push($attachment_scale_values, $this->slideshowHelper->attachment_scale_values($block->dataValue('attachment_scale_' . $key, 1), $key));
             // Filter for media type. $media->mediaType() returns a MIME type.
 
             if ($media) {
@@ -149,6 +150,7 @@ class Slideshow extends AbstractBlockLayout
             'hasAudioAttachment' => $audio_attachment != null,
             'audioAttachment' => $audio_attachment,
             'attachmentOptions' => $this->slideshowHelper->attachment_options(),
+            'attachmentScaleValues' => $attachment_scale_values,
         ];
 
         $attachment_render_values = $this->slideshowHelper->render_values();

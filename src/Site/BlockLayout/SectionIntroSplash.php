@@ -120,9 +120,11 @@ class SectionIntroSplash extends AbstractBlockLayout
         if (!$attachments) {
             return '';
         }
+        $attachment_scale_values = [];
 
         foreach($attachments as $key => $attachment) {
             $this->slideshowHelper->attachment_values($block, $key);
+            array_push($attachment_scale_values, $this->slideshowHelper->attachment_scale_values($block->dataValue('attachment_scale_' . $key, 1), $key));
         }
 
         $data = $block->data();
@@ -144,6 +146,7 @@ class SectionIntroSplash extends AbstractBlockLayout
             'regionClass' => 'region-' . $region,
             'targetID' => '#' . $region,
             'attachmentOptions' => $this->slideshowHelper->attachment_options(),
+            'attachmentScaleValues' => $attachment_scale_values,
         ];
 
         $attachment_render_values = $this->slideshowHelper->render_values();

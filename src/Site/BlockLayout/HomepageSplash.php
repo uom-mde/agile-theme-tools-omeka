@@ -116,8 +116,11 @@ class HomepageSplash extends AbstractBlockLayout
             return '';
         }
 
+        $attachment_scale_values = [];
+
         foreach($attachments as $key => $attachment) {
             $this->slideshowHelper->attachment_values($block, $key);
+            array_push($attachment_scale_values, $this->slideshowHelper->attachment_scale_values($block->dataValue('attachment_scale_' . $key, 1), $key));
         }
 
         $data = $block->data();
@@ -140,6 +143,7 @@ class HomepageSplash extends AbstractBlockLayout
             'targetID' => '#' . $region,
             'warningText' => !empty($data['warningText']) ? $data['warningText'] : '',
             'attachmentOptions' => $this->slideshowHelper->attachment_options(),
+            'attachmentScaleValues' => $attachment_scale_values,
         ];
 
         $attachment_render_values = $this->slideshowHelper->render_values();
