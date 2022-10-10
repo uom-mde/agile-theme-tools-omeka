@@ -1,5 +1,11 @@
 (function($) {
     $(document).ready(function() {
+
+      $('.slideshow').on('fullscreenchange', function(e) {
+        if (document.fullscreenElement === null) {
+          closeFullscreen();
+        }
+      });
       
         $('.slideshow').each(function(){
           if ($(this).find('.item').length < 1) return;
@@ -163,9 +169,7 @@ function openFullScreen(){
   } else if (elem.msRequestFullscreen) { /* IE/Edge */
     elem.msRequestFullscreen();
   }
-  $(document).keyup(function(e) {
-    if (e.keyCode === 27) closeFullscreen();   // if esc is pressed to exit fullscreen
-  });
+  $('body').addClass('slideshow-fullscreen');
 }
 function openFullScreen2(){
   var elem =  $('.slideshow')[1];
@@ -180,24 +184,26 @@ function openFullScreen2(){
   } else if (elem.msRequestFullscreen) { /* IE/Edge */
     elem.msRequestFullscreen();
   }
-  $(document).keyup(function(e) {
-    if (e.keyCode === 27) closeFullscreen();   // if esc is pressed to exit fullscreen
-  });
+  $('body').addClass('slideshow-fullscreen');
 }
 /* Close fullscreen */
 function closeFullscreen() {
+  console.log('foo')
   var slideshow =  $('.slideshow')[0];
   var slideshow2 =  $('.slideshow')[1];
-  $(slideshow).append("<button class='slide-fullscreen-openBtn' onclick='openFullScreen()'><span class='fullscreen-label'>View in <br> Full Screen</span></button>");
-  $(slideshow2).append("<button class='slide-fullscreen-openBtn' onclick='openFullScreen2()'><span class='fullscreen-label'>View in <br> Full Screen</span></button>");
+  $(slideshow).find('.fullscreen-wrapper').append("<button class='slide-fullscreen-openBtn' onclick='openFullScreen()'><span class='fullscreen-label'>View in <br> Full Screen</span></button>");
+  $(slideshow2).find('.fullscreen-wrapper').append("<button class='slide-fullscreen-openBtn' onclick='openFullScreen2()'><span class='fullscreen-label'>View in <br> Full Screen</span></button>");
   $('.slide-fullscreen-closeBtn').remove();
-  if (document.exitFullscreen) {
-    document.exitFullscreen();
-  } else if (document.mozCancelFullScreen) { /* Firefox */
-    document.mozCancelFullScreen();
-  } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
-    document.webkitExitFullscreen();
-  } else if (document.msExitFullscreen) { /* IE/Edge */
-    document.msExitFullscreen();
+  if (document.fullscreenElement !== null) {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.mozCancelFullScreen) { /* Firefox */
+      document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) { /* IE/Edge */
+      document.msExitFullscreen();
+    }
   }
+  $('body').removeClass('slideshow-fullscreen');
 }
