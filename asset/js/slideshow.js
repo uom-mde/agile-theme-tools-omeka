@@ -2,10 +2,19 @@
     $(document).ready(function() {
 
       $('.slideshow').on('fullscreenchange', function(e) {
+        let activeSlideshow = $('.slideshow.fullscreen-enabled')
         if (document.fullscreenElement === null) {
-          closeFullscreen();
+          closeFullscreen(activeSlideshow);
         }
       });
+
+      $('.slideshow').on('click', '.slide-fullscreen-openBtn', function() {
+        openFullscreen($(this).closest('.slideshow'));
+      })
+
+      $('.slideshow').on('click', '.slide-fullscreen-closeBtn', function() {
+        closeFullscreen($(this).closest('.slideshow'));
+      })
       
         $('.slideshow').each(function(){
           if ($(this).find('.item').length < 1) return;
@@ -83,14 +92,9 @@
         
         
         if ($('.slideshow').length > 0){
-          var slideshow1 =  $('.slideshow')[0];
-          var slideshow2 = $('.slideshow')[1];
+          var slideshow =  $('.slideshow');
             //fullscreen button, it checks for then adds a btn into dom with click event for fullscreen styling
-            $(slideshow1).append("<span class='fullscreen-wrapper'><button class='slide-fullscreen-openBtn' onclick='openFullScreen()'><span class='fullscreen-label'>View in <br> Full Screen</span></button></span>");
-            $(slideshow2).append("<span class='fullscreen-wrapper'><button class='slide-fullscreen-openBtn' onclick='openFullScreen2()'><span class='fullscreen-label'>View in <br> Full Screen</span></button></span>");
-
-            var slideshow = $(slideshow1);
-            var secondSlideshow = $(slideshow2);
+            $(slideshow).append("<span class='fullscreen-wrapper'><button class='slide-fullscreen-openBtn'><span class='fullscreen-label'>View in <br> Full Screen</span></button></span>");
     
             // Adds a .navHover class to the slideshow to assist UI styling
             
@@ -104,17 +108,6 @@
                 })
               
             });
-            $('.slick-arrow').each(function(){
-              $(this)
-                .on('mouseenter',function(){
-                  secondSlideshow.addClass('navHover');
-                })
-                .on('mouseleave',function(){
-                  secondSlideshow.removeClass('navHover');
-                })
-              
-            });
-            
         }
 
         $.each(['#homepage-splash', '.section-intro-splash'], function(idx, val) {
@@ -156,44 +149,30 @@
 })(jQuery);
 
 //onlick function for fullscreen
-function openFullScreen(){
-  var elem =  $('.slideshow')[0];
-  $(elem).append("<button class='slide-fullscreen-closeBtn' onclick='closeFullscreen()'>X</button>");
-  $('.slide-fullscreen-openBtn').remove();
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen();
+function openFullscreen(elem){
+  elem.addClass('fullscreen-enabled');
+  elem.append("<button class='slide-fullscreen-closeBtn'>X</button>");
+  elem.find('.slide-fullscreen-openBtn').remove();
+  if (elem.get(0).requestFullscreen) {
+    elem.get(0).requestFullscreen();
   } else if (elem.mozRequestFullScreen) { /* Firefox */
-    elem.mozRequestFullScreen();
+    elem.get(0).mozRequestFullScreen();
   } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
-    elem.webkitRequestFullscreen();
+    elem.get(0).webkitRequestFullscreen();
   } else if (elem.msRequestFullscreen) { /* IE/Edge */
-    elem.msRequestFullscreen();
+    elem.get(0).msRequestFullscreen();
   }
   $('body').addClass('slideshow-fullscreen');
 }
-function openFullScreen2(){
-  var elem =  $('.slideshow')[1];
-  $(elem).append("<button class='slide-fullscreen-closeBtn' onclick='closeFullscreen()'>X</button>");
-  $('.slide-fullscreen-openBtn').remove();
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen();
-  } else if (elem.mozRequestFullScreen) { /* Firefox */
-    elem.mozRequestFullScreen();
-  } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
-    elem.webkitRequestFullscreen();
-  } else if (elem.msRequestFullscreen) { /* IE/Edge */
-    elem.msRequestFullscreen();
-  }
-  $('body').addClass('slideshow-fullscreen');
-}
+
 /* Close fullscreen */
-function closeFullscreen() {
-  console.log('foo')
-  var slideshow =  $('.slideshow')[0];
-  var slideshow2 =  $('.slideshow')[1];
-  $(slideshow).find('.fullscreen-wrapper').append("<button class='slide-fullscreen-openBtn' onclick='openFullScreen()'><span class='fullscreen-label'>View in <br> Full Screen</span></button>");
-  $(slideshow2).find('.fullscreen-wrapper').append("<button class='slide-fullscreen-openBtn' onclick='openFullScreen2()'><span class='fullscreen-label'>View in <br> Full Screen</span></button>");
-  $('.slide-fullscreen-closeBtn').remove();
+function closeFullscreen(elem) {
+
+  if (elem.hasClass('fullscreen-enabled')) {
+    elem.find('.fullscreen-wrapper').append("<button class='slide-fullscreen-openBtn'><span class='fullscreen-label'>View in <br> Full Screen</span></button>");
+  }
+  elem.removeClass('fullscreen-enabled')
+  elem.find('.slide-fullscreen-closeBtn').remove();
   if (document.fullscreenElement !== null) {
     if (document.exitFullscreen) {
       document.exitFullscreen();
