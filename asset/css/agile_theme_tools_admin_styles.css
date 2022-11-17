@@ -1,3 +1,5 @@
+/* slideshow */
+
 .slideshow-options {
   margin-bottom: 2rem;
 }
@@ -24,4 +26,13 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
+}
+
+/* html with translations */
+#html-with-translation-templates-wrapper {
+  display: none;
+}
+
+#html-with-translation-wrapper label {
+  display: block;
 }

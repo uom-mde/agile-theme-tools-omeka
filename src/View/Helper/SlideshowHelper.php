@@ -1,5 +1,5 @@
 <?php
-namespace AgileThemeTools\Site\BlockLayout;
+namespace AgileThemeTools\View\Helper;
 
 use AgileThemeTools\Form\Element\RegionMenuSelect;
 use Omeka\Api\Representation\SitePageBlockRepresentation;

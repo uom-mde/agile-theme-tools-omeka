@@ -1,0 +1,25 @@
+<p>Add a text block and then add an optional translation</p>
+<div id="html-with-translation-original">
+    <?php echo $this->htmlform; ?>
+</div>
+<div id="html-with-translation-templates-wrapper">
+    <div class="html-with-translation-templates">
+        <div class="html-with-translation-select-template">
+            <label for="o:block[__blockIndex__][o:data][translation_html_language_{idx}]">Select Language</label>
+            <?php echo $this->languageSelectTemplate; ?>
+        </div>
+        <div class="html-with-translation-translation-template">
+            <label for="o:block[__blockIndex__][o:data][translation_html_{idx}]">Translation</label>
+            <?php echo $this->translationTemplate; ?>
+        </div>
+    </div>
+</div>
+<a href="#" class="collapse" aria-label="collapse"><h4><?php echo $this->translate('Translations'); ?></h4></a>
+<div class="collapsible">
+    <button id="add-html-with-translation-translation"><?php echo $this->translate('Add a translation'); ?></button>
+    <div id="html-with-translation-wrapper">
+        <?php foreach ($this->translations as $translation): ?>
+            <?php echo $translation; ?>
+        <?php endforeach; ?>
+    </div>
+</div>

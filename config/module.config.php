@@ -16,6 +16,7 @@
               'openGraphImage' => Service\BlockLayout\OpenGraphImageFactory::class,
               'slideshow' => Service\BlockLayout\SlideshowFactory::class,
               'poster' => Service\BlockLayout\PosterFactory::class,
+              'htmlWithTranslation' => Service\BlockLayout\HtmlWithTranslationFactory::class,
               'itemListing' => Service\BlockLayout\ItemListingFactory::class,
               'callout' => Service\BlockLayout\CalloutFactory::class,
               'quotation' => Service\BlockLayout\QuotationFactory::class,

@@ -2,7 +2,7 @@
 namespace AgileThemeTools\Site\BlockLayout;
 
 use AgileThemeTools\Form\Element\RegionMenuSelect;
-use AgileThemeTools\Site\BlockLayout\SlideshowHelper;
+use AgileThemeTools\View\Helper\SlideshowHelper;
 use Omeka\Site\BlockLayout\AbstractBlockLayout;
 use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Api\Representation\SitePageRepresentation;
@@ -50,11 +50,13 @@ class SectionIntroSplash extends AbstractBlockLayout
         $block->setData($data);
     }
 
+    public function prepareForm(PhpRenderer $view) {
+        $view->headLink()->appendStylesheet($view->assetUrl('css/agile_theme_tools_admin_styles.css', 'AgileThemeTools'));
+    }
+
     public function form(PhpRenderer $view, SiteRepresentation $site,
                          SitePageRepresentation $page = null, SitePageBlockRepresentation $block = null
     ) {
-
-        $view->headLink()->appendStylesheet($view->assetUrl('css/agile_theme_tools_admin_styles.css', 'AgileThemeTools'));
 
         $title = new Text("o:block[__blockIndex__][o:data][title]");
         $title->setAttribute('class', 'block-title');
