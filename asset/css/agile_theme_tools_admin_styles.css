@@ -1,0 +1,27 @@
+.slideshow-options {
+  margin-bottom: 2rem;
+}
+
+.slideshow-options h5 {
+  margin: 2rem 0 0.5rem 0;
+}
+
+.slideshow-options h5:first-of-type {
+  margin-top: 1rem;
+}
+
+.slideshow-refinements {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.slideshow-refinements input[type="number"] {
+  width: 100%;
+}
+
+@media screen and (max-width: 767px) {
+  .slideshow-refinements {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}

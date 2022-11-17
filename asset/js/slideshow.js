@@ -1,26 +1,59 @@
 (function($) {
     $(document).ready(function() {
+
+      $('.slideshow').on('fullscreenchange', function(e) {
+        let activeSlideshow = $('.slideshow.fullscreen-enabled')
+        if (document.fullscreenElement === null) {
+          closeFullscreen(activeSlideshow);
+        }
+      });
+
+      $('.slideshow').on('click', '.slide-fullscreen-openBtn', function() {
+        openFullscreen($(this).closest('.slideshow'));
+      })
+
+      $('.slideshow').on('click', '.slide-fullscreen-closeBtn', function() {
+        closeFullscreen($(this).closest('.slideshow'));
+      })
       
         $('.slideshow').each(function(){
-          if ($(this).length == 1) return;
-          
-           $(this).slick(
-               {
-                   slidesToShow: 1,
-                   slidesToScroll: 1,
-                   autoplay: false,
-                   autoplaySpeed: 8000,
-                   dots: true,
-                   adaptiveHeight: false,
-                   accessibility: true,
-                   prevArrow: "<div class='slick-prev'></div>",
-                   nextArrow: "<div class='slick-next'></div>",
-                   accessibility: true,
-                   focusOnSelect: true,
-                   fade: true,
-                   cssEase: 'linear',
-               }
-           );
+          if ($(this).find('.item').length < 1) return;
+          if ($(this).find('.item').length > 1) {
+            $(this).not('.slick-initalized').slick(
+                {
+                  slidesToShow: 1,
+                  slidesToScroll: 1,
+                  autoplay: true,
+                  autoplaySpeed: 8000,
+                  dots: true,
+                  adaptiveHeight: false,
+                  prevArrow: "<div class='slick-prev'></div>",
+                  nextArrow: "<div class='slick-next'></div>",
+                  accessibility: true,
+                  focusOnSelect: true,
+                  fade: true,
+                  cssEase: 'linear',
+              }
+            );
+          }
+          else {
+            $(this).not('.slick-initalized').slick(
+              {
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                autoplay: false,
+                autoplaySpeed: 8000,
+                dots: true,
+                adaptiveHeight: false,
+                prevArrow: "<div class='slick-prev'></div>",
+                nextArrow: "<div class='slick-next'></div>",
+                accessibility: true,
+                focusOnSelect: true,
+                fade: true,
+                cssEase: 'linear',
+            }
+          );
+          }
         });
 
         $('.slideshow-with-audio').each(function(){
@@ -59,14 +92,9 @@
         
         
         if ($('.slideshow').length > 0){
-          var slideshow1 =  $('.slideshow')[0];
-          var slideshow2 = $('.slideshow')[1];
+          var slideshow =  $('.slideshow');
             //fullscreen button, it checks for then adds a btn into dom with click event for fullscreen styling
-            $(slideshow1).append("<button class='slide-fullscreen-openBtn' onclick='openFullScreen()'><span class='fullscreen-label'>View in <br> Full Screen</span></button>");
-            $(slideshow2).append("<button class='slide-fullscreen-openBtn' onclick='openFullScreen2()'><span class='fullscreen-label'>View in <br> Full Screen</span></button>");
-
-            var slideshow = $(slideshow1);
-            var secondSlideshow = $(slideshow2);
+            $(slideshow).append("<span class='fullscreen-wrapper'><button class='slide-fullscreen-openBtn'><span class='fullscreen-label'>View in <br> Full Screen</span></button></span>");
     
             // Adds a .navHover class to the slideshow to assist UI styling
             
@@ -80,25 +108,31 @@
                 })
               
             });
-            $('.slick-arrow').each(function(){
-              $(this)
-                .on('mouseenter',function(){
-                  secondSlideshow.addClass('navHover');
-                })
-                .on('mouseleave',function(){
-                  secondSlideshow.removeClass('navHover');
-                })
-              
-            });
-            
-            
         }
-        
-        if ($(['#homepage-splash', '.section-intro-splash']).length > 0) {
-          $('#homepage-splash, .section-intro-splash').find('.items').slick({
+
+        $.each(['#homepage-splash', '.section-intro-splash'], function(idx, val) {
+          if ($(val).find('.items .item').length > 1) {
+            $(val).find('.items').not('.slick-initalized').slick({
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 8000,
+                infinite: true,
+                fade: true,
+                cssEase: 'linear',
+                dots: true,
+                arrows: true,
+                prevArrow: "<div class='slick-prev'></div>",
+                nextArrow: "<div class='slick-next'></div>",
+                accessibility: true,
+            });
+          }
+          else {
+            $(val).find('.items').addClass('single-carousel');
+            $(val).find('.items').not('.slick-initalized').slick({
               slidesToShow: 1,
               slidesToScroll: 1,
-              autoplay: true,
+              autoplay: false,
               autoplaySpeed: 8000,
               infinite: true,
               fade: true,
@@ -110,59 +144,45 @@
               accessibility: true,
           });
         }
-
+      });
     });
 })(jQuery);
 
 //onlick function for fullscreen
-function openFullScreen(){
-  var elem =  $('.slideshow')[0];
-  $(elem).append("<button class='slide-fullscreen-closeBtn' onclick='closeFullscreen()'>X</button>");
-  $('.slide-fullscreen-openBtn').remove();
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen();
+function openFullscreen(elem){
+  elem.addClass('fullscreen-enabled');
+  elem.append("<button class='slide-fullscreen-closeBtn'>X</button>");
+  elem.find('.slide-fullscreen-openBtn').remove();
+  if (elem.get(0).requestFullscreen) {
+    elem.get(0).requestFullscreen();
   } else if (elem.mozRequestFullScreen) { /* Firefox */
-    elem.mozRequestFullScreen();
+    elem.get(0).mozRequestFullScreen();
   } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
-    elem.webkitRequestFullscreen();
+    elem.get(0).webkitRequestFullscreen();
   } else if (elem.msRequestFullscreen) { /* IE/Edge */
-    elem.msRequestFullscreen();
+    elem.get(0).msRequestFullscreen();
   }
-  $(document).keyup(function(e) {
-    if (e.keyCode === 27) closeFullscreen();   // if esc is pressed to exit fullscreen
-  });
+  $('body').addClass('slideshow-fullscreen');
 }
-function openFullScreen2(){
-  var elem =  $('.slideshow')[1];
-  $(elem).append("<button class='slide-fullscreen-closeBtn' onclick='closeFullscreen()'>X</button>");
-  $('.slide-fullscreen-openBtn').remove();
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen();
-  } else if (elem.mozRequestFullScreen) { /* Firefox */
-    elem.mozRequestFullScreen();
-  } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
-    elem.webkitRequestFullscreen();
-  } else if (elem.msRequestFullscreen) { /* IE/Edge */
-    elem.msRequestFullscreen();
-  }
-  $(document).keyup(function(e) {
-    if (e.keyCode === 27) closeFullscreen();   // if esc is pressed to exit fullscreen
-  });
-}
+
 /* Close fullscreen */
-function closeFullscreen() {
-  var slideshow =  $('.slideshow')[0];
-  var slideshow2 =  $('.slideshow')[1];
-  $(slideshow).append("<button class='slide-fullscreen-openBtn' onclick='openFullScreen()'><span class='fullscreen-label'>View in <br> Full Screen</span></button>");
-  $(slideshow2).append("<button class='slide-fullscreen-openBtn' onclick='openFullScreen2()'><span class='fullscreen-label'>View in <br> Full Screen</span></button>");
-  $('.slide-fullscreen-closeBtn').remove();
-  if (document.exitFullscreen) {
-    document.exitFullscreen();
-  } else if (document.mozCancelFullScreen) { /* Firefox */
-    document.mozCancelFullScreen();
-  } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
-    document.webkitExitFullscreen();
-  } else if (document.msExitFullscreen) { /* IE/Edge */
-    document.msExitFullscreen();
+function closeFullscreen(elem) {
+
+  if (elem.hasClass('fullscreen-enabled')) {
+    elem.find('.fullscreen-wrapper').append("<button class='slide-fullscreen-openBtn'><span class='fullscreen-label'>View in <br> Full Screen</span></button>");
   }
+  elem.removeClass('fullscreen-enabled')
+  elem.find('.slide-fullscreen-closeBtn').remove();
+  if (document.fullscreenElement !== null) {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.mozCancelFullScreen) { /* Firefox */
+      document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) { /* IE/Edge */
+      document.msExitFullscreen();
+    }
+  }
+  $('body').removeClass('slideshow-fullscreen');
 }
