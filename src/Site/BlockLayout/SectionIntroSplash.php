@@ -84,16 +84,11 @@ class SectionIntroSplash extends AbstractBlockLayout
         $html = $view->formRow($title);
         $html .= $view->blockAttachmentsForm($block);
         if ($block) {
-            $html .= $this->slideshowHelper->slideshow_options_form_html($view, $block, $this->thumbnailObjectSizes);
+            $html .= $this->slideshowHelper->slideshow_options_form_html($view, $block);
         }
         else {
             $html .= '<div><b>Note:</b> After adding an attachment, save the page to see options for the attachment.</div>';
         }
-        $html .= '<a href="#" class="collapse" aria-label="collapse"><h4>' . $view->translate('Image Sizing'). '</h4></a>';
-        foreach ($block->attachments() as $attachment) {
-            $html .= $view->blockThumbnailTypeSelect($block);
-        }
-        $html .= '</div>';
         $html .= '<a href="#" class="collapse" aria-label="collapse"><h4>' . $view->translate('Options'). '</h4></a>';
         $html .= '<div class="collapsible">';
         $html .= $view->formRow($introductionField);

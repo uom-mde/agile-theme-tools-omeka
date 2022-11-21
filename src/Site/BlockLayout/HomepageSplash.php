@@ -83,7 +83,7 @@ class HomepageSplash extends AbstractBlockLayout
         $html = $view->formRow($title);
         $html .= $view->blockAttachmentsForm($block);
         if ($block) {
-            $html .= $this->slideshowHelper->slideshow_options_form_html($view, $block, $this->thumbnailObjectSizes);
+            $html .= $this->slideshowHelper->slideshow_options_form_html($view, $block);
         }
         else {
             $html .= '<div><b>Note:</b> After adding an attachment, save the page to see options for the attachment.</div>';
