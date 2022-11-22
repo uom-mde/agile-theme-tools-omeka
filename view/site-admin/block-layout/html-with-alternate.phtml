@@ -1,0 +1,37 @@
+<p>Add a text block and then add an optional alternate text block - e.g. a 
+    transcription or translation. Will display one of the alternates with the original
+    with a mechanism to swap between alternates if more than one is provided.</p>
+<div id="html-with-alternate-original">
+    <?php echo $this->selectform; ?>
+    <?php echo $this->htmlform; ?>
+</div>
+<div id="html-with-alternate-templates-wrapper">
+    <div class="html-with-alternate-wrapper html-alternate-templates">
+        <div class="alternates-grid alternates-grid-templates">
+            <div class="html-with-alternate-type-template">
+                <?php echo $this->typeTemplate; ?>
+            </div>
+            <div class="html-with-alternate-select-template">
+                <?php echo $this->languageSelectTemplate; ?>
+            </div>
+            <div class="html-with-alternate-alternate-template">
+                <?php echo $this->alternateTemplate; ?>
+            </div>
+            <div class="html-with-alternate-remove"><button class="html-with-alternate-remove-alternate">Remove</button></div>
+        </div>
+    </div>
+</div>
+<a href="#" class="collapse" aria-label="collapse"><h4><?php echo $this->translate('Alternate text'); ?></h4></a>
+<div class="collapsible">
+    <button id="add-html-with-alternate-alternate"><?php echo $this->translate('Add an alternate text block'); ?></button>
+    <div id="html-with-alternates" class="html-with-alternate-wrapper">
+        <?php foreach ($this->alternates as $key => $alternate): ?>
+            <div class="alternates-grid">
+                <div><?php echo $alternateTypes[$key]; ?></div>
+                <div><?php echo $alternateLanguages[$key]; ?></div>
+                <div><?php echo $alternate; ?></div>
+                <div class="html-with-alternate-remove"><button class="html-with-alternate-remove-alternate">Remove</button></div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>

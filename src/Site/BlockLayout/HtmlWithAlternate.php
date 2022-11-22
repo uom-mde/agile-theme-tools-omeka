@@ -15,7 +15,7 @@ use Laminas\Form\Element\Textarea;
 use Laminas\Form\Element\Select;
 use Laminas\View\Renderer\PhpRenderer;
 
-class HtmlWithTranslation extends AbstractBlockLayout
+class HtmlWithAlternate extends AbstractBlockLayout
 {
     /**
      * @var HtmlPurifier
@@ -32,11 +32,14 @@ class HtmlWithTranslation extends AbstractBlockLayout
         $this->formElementManager = $formElementManager;
         $this->availableLanguages = new AvailableLanguagesHelper;
         $this->default_language = $this->availableLanguages->getDefaultAvailableLanguage();
+
+        $this->type_default = 'translation';
+        $this->alternateTypeList = ['other' => 'Other','transcription' => 'Transcription','translation' => 'Translation'];
     }
 
     public function getLabel()
     {
-        return 'HTML with Translation(s)'; // @translate
+        return 'HTML with alternate text block(s)'; // @translate
     }
 
     public function onHydrate(SitePageBlock $block, ErrorStore $errorStore)
@@ -45,12 +48,15 @@ class HtmlWithTranslation extends AbstractBlockLayout
         $html = isset($data['html']) ? $this->htmlPurifier->purify($data['html']) : '';
         $data['html'] = $html;
 
-        // find any newly created translations
+        // find any newly created alternates
         foreach ($data as $key => $val) {
-            if (preg_match("/translation_html_language_([0-9]+)/", $key)) {
+            if (preg_match("/alternate_html_language_([0-9]+)/", $key)) {
                 $data[$key] = $val;
-              }
-            if (preg_match("/translation_html_([0-9]+)/", $key)) {
+            }
+            if (preg_match("/alternate_html_type_([0-9]+)/", $key)) {
+                $data[$key] = $val;
+            }
+            if (preg_match("/alternate_html_([0-9]+)/", $key)) {
                 $data[$key] = $val;
             }
         }
@@ -67,61 +73,75 @@ class HtmlWithTranslation extends AbstractBlockLayout
                          SitePageRepresentation $page = null, SitePageBlockRepresentation $block = null
     ) {
 
-        $translationLanguageList = $this->availableLanguages->getAvailableLanguages();
+        $alternateLanguageList = $this->availableLanguages->getAvailableLanguages();
         $language_select_template_default = $this->default_language;
 
         $textarea_language = new Select('o:block[__blockIndex__][o:data][html_language]');
-        $textarea_language->setValueOptions($translationLanguageList)->setValue($language_select_template_default);
+        $textarea_language->setValueOptions($alternateLanguageList)->setValue($language_select_template_default);
         $textarea_language->setLabel('Select original language');
 
         $textarea = new Textarea("o:block[__blockIndex__][o:data][html]");
         $textarea->setAttribute('class', 'block-html full wysiwyg');
         $textarea->setAttribute('rows',20);
 
-        $language_select_template = new Select('o:block[__blockIndex__][o:data][translation_html_language_{idx}]');
-        $language_select_template->setValueOptions($translationLanguageList)->setValue($language_select_template_default);
-        $language_select_template->setLabel('Select translation language');
+        $type_template = new Select('o:block[__blockIndex__][o:data][alternate_html_type_{idx}]');
+        $type_template->setValueOptions($this->alternateTypeList)->setValue($this->type_default);
+        $type_template->setLabel('Select alternate type');
 
-        $textarea_translation_template = new Textarea("o:block[__blockIndex__][o:data][translation_html_{idx}]");
-        $textarea_translation_template->setLabel('Translation');
-        $textarea_translation_template->setAttribute('class', 'block-html full');
-        $textarea_translation_template->setAttribute('id', 'translation_html_{idx}');
-        $textarea_translation_template->setAttribute('rows',20);
+        $language_select_template = new Select('o:block[__blockIndex__][o:data][alternate_html_language_{idx}]');
+        $language_select_template->setValueOptions($alternateLanguageList)->setValue($language_select_template_default);
+        $language_select_template->setLabel('Select alternate language');
 
-        $translations = [];
-        $translation_languages = [];
+        $textarea_alternate_template = new Textarea("o:block[__blockIndex__][o:data][alternate_html_{idx}]");
+        $textarea_alternate_template->setLabel('Alternate');
+        $textarea_alternate_template->setAttribute('class', 'block-html full');
+        $textarea_alternate_template->setAttribute('id', 'alternate_html_{idx}');
+        $textarea_alternate_template->setAttribute('rows',20);
+
+        $alternates = [];
+        $alternate_languages = [];
+        $alternate_types = [];
 
         if ($block) {
             $textarea->setAttribute('value', $block->dataValue('html'));
             foreach ($block->data() as $key => $val) {
-                if (preg_match("/translation_html_language_([0-9]+)/", $key)) {
+                if (preg_match("/alternate_html_language_([0-9]+)/", $key)) {
                     ${$key} = new Select("o:block[__blockIndex__][o:data][" . $key . "]");
-                    ${$key}->setLabel('Select translation language');
-                    ${$key}->setValueOptions($translationLanguageList);        
+                    ${$key}->setLabel('Select alternate language');
+                    ${$key}->setValueOptions($alternateLanguageList);        
                     ${$key}->setAttribute('value', $block->dataValue("{$key}"));
-                    array_push($translation_languages, $view->formRow(${$key}));
-                  }
-                if (preg_match("/translation_html_([0-9]+)/", $key)) {
+                    array_push($alternate_languages, $view->formRow(${$key}));
+                }
+                if (preg_match("/alternate_html_type_([0-9]+)/", $key)) {
+                    ${$key} = new Select("o:block[__blockIndex__][o:data][" . $key . "]");
+                    ${$key}->setLabel('Select alternate type');
+                    ${$key}->setValueOptions($this->alternateTypeList);        
+                    ${$key}->setAttribute('value', $block->dataValue("{$key}"));
+                    array_push($alternate_types, $view->formRow(${$key}));
+                }
+                if (preg_match("/alternate_html_([0-9]+)/", $key)) {
                     ${$key} = new Textarea("o:block[__blockIndex__][o:data][" . $key . "]");
-                    ${$key}->setLabel('Translation');
+                    ${$key}->setLabel('Alternate');
                     ${$key}->setAttribute('class', 'block-html full wysiwyg');
                     ${$key}->setAttribute('id', $key);
-                    ${$key}->setAttribute('rows',20);
+                    ${$key}->setAttribute('rows',5);
                     ${$key}->setAttribute('value', $block->dataValue("{$key}"));
-                    array_push($translations, $view->formRow(${$key}));
+                    array_push($alternates, $view->formRow(${$key}));
                 }
             }
         }
 
         return $view->partial(
-            'site-admin/block-layout/html-with-translation.phtml',
+            'site-admin/block-layout/html-with-alternate.phtml',
             [
                 'htmlform' => $view->formRow($textarea),
                 'selectform' => $view->formRow($textarea_language),
+                'typeTemplate' => $view->formRow($type_template),
                 'languageSelectTemplate' => $view->formRow($language_select_template),
-                'translationTemplate' => $view->formRow($textarea_translation_template),
-                'translation_languages' => $translation_languages,
-                'translations' => $translations,
+                'alternateTemplate' => $view->formRow($textarea_alternate_template),
+                'alternateTypes' => $alternate_types,
+                'alternateLanguages' => $alternate_languages,
+                'alternates' => $alternates,
                 'data' => $block ? $block->data() : []
             ]
         );
@@ -138,7 +158,7 @@ class HtmlWithTranslation extends AbstractBlockLayout
 
         $data = $block->data();
         return $view->partial(
-            'common/block-layout/html-with-translation.phtml',
+            'common/block-layout/html-with-alternate.phtml',
             [
                 'html' => $data['html'],
                 'blockId' => $block->id(),

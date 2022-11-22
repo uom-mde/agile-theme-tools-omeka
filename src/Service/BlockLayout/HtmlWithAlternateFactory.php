@@ -1,22 +1,22 @@
 <?php
 namespace AgileThemeTools\Service\BlockLayout;
 
-use AgileThemeTools\Site\BlockLayout\HtmlWithTranslation;
+use AgileThemeTools\Site\BlockLayout\HtmlWithAlternate;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
-class HtmlWithTranslationFactory implements FactoryInterface
+class HtmlWithAlternateFactory implements FactoryInterface
 {
     /**
      * Create the Html block layout service.
      *
      * @param ContainerInterface $serviceLocator
-     * @return HtmlWithTranslation
+     * @return HtmlWithAlternate
      */
     public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
     {
         $htmlPurifier = $serviceLocator->get('Omeka\HtmlPurifier');
         $formElementManager = $serviceLocator->get('FormElementManager');
-        return new HtmlWithTranslation($htmlPurifier,$formElementManager);
+        return new HtmlWithAlternate($htmlPurifier,$formElementManager);
     }
 }
