@@ -67,33 +67,43 @@ class HtmlWithTranslation extends AbstractBlockLayout
                          SitePageRepresentation $page = null, SitePageBlockRepresentation $block = null
     ) {
 
+        $translationLanguageList = $this->availableLanguages->getAvailableLanguages();
+        $language_select_template_default = $this->default_language;
+
+        $textarea_language = new Select('o:block[__blockIndex__][o:data][html_language]');
+        $textarea_language->setValueOptions($translationLanguageList)->setValue($language_select_template_default);
+        $textarea_language->setLabel('Select original language');
+
         $textarea = new Textarea("o:block[__blockIndex__][o:data][html]");
         $textarea->setAttribute('class', 'block-html full wysiwyg');
         $textarea->setAttribute('rows',20);
 
-        $translationLanguageList = $this->availableLanguages->getAvailableLanguages();
-        $language_select_template_default = $this->default_language;
-
         $language_select_template = new Select('o:block[__blockIndex__][o:data][translation_html_language_{idx}]');
         $language_select_template->setValueOptions($translationLanguageList)->setValue($language_select_template_default);
+        $language_select_template->setLabel('Select translation language');
 
         $textarea_translation_template = new Textarea("o:block[__blockIndex__][o:data][translation_html_{idx}]");
-        $textarea_translation_template->setAttribute('class', 'block-html full wysiwyg');
+        $textarea_translation_template->setLabel('Translation');
+        $textarea_translation_template->setAttribute('class', 'block-html full');
         $textarea_translation_template->setAttribute('id', 'translation_html_{idx}');
         $textarea_translation_template->setAttribute('rows',20);
 
+        $translations = [];
+        $translation_languages = [];
+
         if ($block) {
             $textarea->setAttribute('value', $block->dataValue('html'));
-            $translations = [];
             foreach ($block->data() as $key => $val) {
                 if (preg_match("/translation_html_language_([0-9]+)/", $key)) {
                     ${$key} = new Select("o:block[__blockIndex__][o:data][" . $key . "]");
+                    ${$key}->setLabel('Select translation language');
                     ${$key}->setValueOptions($translationLanguageList);        
                     ${$key}->setAttribute('value', $block->dataValue("{$key}"));
-                    array_push($translations, $view->formRow(${$key}));
+                    array_push($translation_languages, $view->formRow(${$key}));
                   }
                 if (preg_match("/translation_html_([0-9]+)/", $key)) {
                     ${$key} = new Textarea("o:block[__blockIndex__][o:data][" . $key . "]");
+                    ${$key}->setLabel('Translation');
                     ${$key}->setAttribute('class', 'block-html full wysiwyg');
                     ${$key}->setAttribute('id', $key);
                     ${$key}->setAttribute('rows',20);
@@ -102,16 +112,15 @@ class HtmlWithTranslation extends AbstractBlockLayout
                 }
             }
         }
-        else {
-            $translations = [];
-        }
 
         return $view->partial(
             'site-admin/block-layout/html-with-translation.phtml',
             [
                 'htmlform' => $view->formRow($textarea),
+                'selectform' => $view->formRow($textarea_language),
                 'languageSelectTemplate' => $view->formRow($language_select_template),
                 'translationTemplate' => $view->formRow($textarea_translation_template),
+                'translation_languages' => $translation_languages,
                 'translations' => $translations,
                 'data' => $block ? $block->data() : []
             ]

@@ -36,3 +36,25 @@
 #html-with-translation-wrapper label {
   display: block;
 }
+
+#html-with-translation-wrapper select {
+  width: 50%;
+}
+
+.html-with-translation-remove {
+  margin-top: 1rem;
+  text-align: right;
+}
+
+#add-html-with-translation-translation {
+  margin-top: 1rem;
+}
+
+.html-with-translation-wrapper .field .field-meta, 
+.html-with-translation-wrapper .field .inputs {
+  width: 100%;
+}
+
+.translations-grid {
+  border-bottom: 1px solid #ddd;
+}
