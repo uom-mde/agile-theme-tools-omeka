@@ -1,3 +1,37 @@
-<div id="block-<?php echo $this->blockId; ?>" class="region <?php echo $this->regionClass; ?>" data-target-region-id="<?php echo $this->targetID; ?>">
-    <?php echo $this->html; ?>
+<div id="block-<?php echo $this->blockId; ?>" class="alternate-html-block">
+    <div class="alternate-html-block-live" aria-live="polite"></div>
+    <div lang="<?php echo $this->originalLanguageCode; ?>">
+        <?php echo $this->html; ?>
+    </div>
+    <?php if (count($this->alternates) > 0): ?>
+        <?php
+            $options = [];
+            $html_elements = [];
+            // build the select mechanism to toggle between alternates
+            foreach ($this->alternates as $key => $alternate) {
+                $options[$key] = [$this->alternateTypes[$key], $this->alternateLanguages[$key]];
+                $html_elements[$key] = [$this->alternateLanguageCodes[$key], $this->alternateTypes[$key], $alternate];
+            }
+        ?>
+        <div class="alternate-html-elements">
+            <?php if (count($options) > 1): ?>
+                <div>
+                    <label for="alternate-html-toggle"><?php echo $this->translate('Choose Alternate'); ?></label>
+                    <select id="alternate-html-toggle" name="alternate-html-toggle">
+                        <?php foreach ($options as $key => $option): ?>
+                            <option value="alernate-option-<?php echo $key; ?>"><?php echo $option[0]; ?> - <?php echo $option[1]; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            <?php endif; ?>
+            <?php 
+                foreach ($html_elements as $el): ?>
+                <div lang="<?php echo $el[0]; ?>" class="alternate-option-<?php echo $key; ?>">
+                    <?php echo $el[1]; ?>
+                    <?php echo $el[2]; ?>
+                </div>
+
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
 </div>

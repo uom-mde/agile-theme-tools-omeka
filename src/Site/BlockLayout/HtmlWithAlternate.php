@@ -32,6 +32,7 @@ class HtmlWithAlternate extends AbstractBlockLayout
         $this->formElementManager = $formElementManager;
         $this->availableLanguages = new AvailableLanguagesHelper;
         $this->default_language = $this->availableLanguages->getDefaultAvailableLanguage();
+        $this->alternateLanguageList = $this->availableLanguages->getAvailableLanguages();
 
         $this->type_default = 'translation';
         $this->alternateTypeList = ['other' => 'Other','transcription' => 'Transcription','translation' => 'Translation'];
@@ -73,11 +74,8 @@ class HtmlWithAlternate extends AbstractBlockLayout
                          SitePageRepresentation $page = null, SitePageBlockRepresentation $block = null
     ) {
 
-        $alternateLanguageList = $this->availableLanguages->getAvailableLanguages();
-        $language_select_template_default = $this->default_language;
-
         $textarea_language = new Select('o:block[__blockIndex__][o:data][html_language]');
-        $textarea_language->setValueOptions($alternateLanguageList)->setValue($language_select_template_default);
+        $textarea_language->setValueOptions($this->alternateLanguageList)->setValue($this->default_language);
         $textarea_language->setLabel('Select original language');
 
         $textarea = new Textarea("o:block[__blockIndex__][o:data][html]");
@@ -89,7 +87,7 @@ class HtmlWithAlternate extends AbstractBlockLayout
         $type_template->setLabel('Select alternate type');
 
         $language_select_template = new Select('o:block[__blockIndex__][o:data][alternate_html_language_{idx}]');
-        $language_select_template->setValueOptions($alternateLanguageList)->setValue($language_select_template_default);
+        $language_select_template->setValueOptions($this->alternateLanguageList)->setValue($this->default_language);
         $language_select_template->setLabel('Select alternate language');
 
         $textarea_alternate_template = new Textarea("o:block[__blockIndex__][o:data][alternate_html_{idx}]");
@@ -108,7 +106,7 @@ class HtmlWithAlternate extends AbstractBlockLayout
                 if (preg_match("/alternate_html_language_([0-9]+)/", $key)) {
                     ${$key} = new Select("o:block[__blockIndex__][o:data][" . $key . "]");
                     ${$key}->setLabel('Select alternate language');
-                    ${$key}->setValueOptions($alternateLanguageList);        
+                    ${$key}->setValueOptions($this->alternateLanguageList);        
                     ${$key}->setAttribute('value', $block->dataValue("{$key}"));
                     array_push($alternate_languages, $view->formRow(${$key}));
                 }
@@ -157,10 +155,33 @@ class HtmlWithAlternate extends AbstractBlockLayout
     public function render(PhpRenderer $view, SitePageBlockRepresentation $block) {
 
         $data = $block->data();
+        $alternates = [];
+        $alternate_types = [];
+        $alternate_languages = [];
+        $alternate_language_codes = [];
+
+        foreach ($data as $key => $val) {
+            if (preg_match("/alternate_html_language_([0-9]+)/", $key)) {
+                array_push($alternate_language_codes, $val);
+                array_push($alternate_languages, $this->alternateLanguageList[$val]);
+            }
+            if (preg_match("/alternate_html_type_([0-9]+)/", $key)) {
+                array_push($alternate_types, $this->alternateTypeList[$val]);
+            }
+            if (preg_match("/alternate_html_([0-9]+)/", $key)) {
+                array_push($alternates, $val);
+            }
+        }
         return $view->partial(
             'common/block-layout/html-with-alternate.phtml',
             [
                 'html' => $data['html'],
+                'originalLanguageCode' => $data['html_language'],
+                'originalLanguage' => $this->alternateLanguageList[$data['html_language']],
+                'alternates' => $alternates,
+                'alternateTypes' => $alternate_types,
+                'alternateLanguageCodes' => $alternate_language_codes,
+                'alternateLanguages' => $alternate_languages,
                 'blockId' => $block->id(),
             ]
         );
