@@ -149,7 +149,8 @@ class HtmlWithAlternate extends AbstractBlockLayout
 
     public function prepareRender(PhpRenderer $view)
     {
-        //$view->headScript()->appendFile($view->assetUrl('js/regional_html_handler.js', 'AgileThemeTools'));
+        $view->headLink()->appendStylesheet($view->assetUrl('css/html_alternate.css', 'AgileThemeTools'));
+        $view->headScript()->appendFile($view->assetUrl('js/html_alternate.js', 'AgileThemeTools'));
     }
 
     public function render(PhpRenderer $view, SitePageBlockRepresentation $block) {

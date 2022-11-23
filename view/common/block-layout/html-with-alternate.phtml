@@ -1,37 +1,57 @@
 <div id="block-<?php echo $this->blockId; ?>" class="alternate-html-block">
-    <div class="alternate-html-block-live" aria-live="polite"></div>
-    <div lang="<?php echo $this->originalLanguageCode; ?>">
-        <?php echo $this->html; ?>
-    </div>
+    <div class="alternate-html-block-live sr-only" aria-live="polite"></div>
     <?php if (count($this->alternates) > 0): ?>
         <?php
+            // gather the alternates data
             $options = [];
             $html_elements = [];
-            // build the select mechanism to toggle between alternates
             foreach ($this->alternates as $key => $alternate) {
                 $options[$key] = [$this->alternateTypes[$key], $this->alternateLanguages[$key]];
-                $html_elements[$key] = [$this->alternateLanguageCodes[$key], $this->alternateTypes[$key], $alternate];
+                $html_elements[$key] = [$this->alternateLanguageCodes[$key], $this->alternateLanguages[$key], $this->alternateTypes[$key], $alternate];
             }
         ?>
-        <div class="alternate-html-elements">
-            <?php if (count($options) > 1): ?>
-                <div>
-                    <label for="alternate-html-toggle"><?php echo $this->translate('Choose Alternate'); ?></label>
-                    <select id="alternate-html-toggle" name="alternate-html-toggle">
-                        <?php foreach ($options as $key => $option): ?>
-                            <option value="alernate-option-<?php echo $key; ?>"><?php echo $option[0]; ?> - <?php echo $option[1]; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-            <?php endif; ?>
-            <?php 
-                foreach ($html_elements as $el): ?>
-                <div lang="<?php echo $el[0]; ?>" class="alternate-option-<?php echo $key; ?>">
-                    <?php echo $el[1]; ?>
-                    <?php echo $el[2]; ?>
-                </div>
+        <?php 
+            // build the select mechanism to toggle between alternates
+            if (count($options) > 1) {
+                $select = '<div>';
+                $select .= '<label for="alternate-html-toggle-' . $this->blockId . '">' . $this->translate('Choose view') . '</label>';
+                $select .= '<select id="alternate-html-toggle-' . $this->blockId . '" name="alternate-html-toggle-' . $this->blockId .'">';
+                $select .= '<option value="alternate-option-original" selected>Original' . ' - ' . $this->originalLanguage . '</option>';
+                    foreach ($options as $key => $option) {
+                        $select .= '<option value="alternate-option-' . $key .'">' . $option[0] . ' - ' . $option[1] . '</option>';
+                    }
+                $select .= '</select></div>';
+            }
+            else {$select = '';}
 
-            <?php endforeach; ?>
+            // we need a second select for the alternate column with the initial selected option = the first alternate
+            $selectSecond = str_replace('alternate-option-original" selected', 'alternate-option-original"', $select);
+            $selectSecond = str_replace('alternate-option-0"','alternate-option-0" selected', $selectSecond);
+
+            // build the alternates html
+            $alternates = '';
+            foreach ($html_elements as $key => $el) {
+                $alternates .= '<div lang="' . $el[0] . '" class="alternate-option-' . $key . '">';
+                $alternates .= '<div class="html-alternate-type"><p>' . $el[2] . ' - ' . $el[1] . '</p></div>';
+                $alternates .= '<div class="html-alternate-text">' . $el[3] . '</div>';
+                $alternates .= '</div>';
+            }
+        ?>
+
+        <div class="alternate-html-elements-first">
+            <?php echo $select; ?>
+            <div class="alternate-option-original active" lang="<?php echo $this->originalLanguageCode; ?>">
+                <?php echo $this->html; ?>
+            </div>
+            <?php echo $alternates; ?>
+        </div>
+        <div class="alternate-html-elements-second">
+            <?php echo $selectSecond; ?>
+            <div class="alternate-option-original" lang="<?php echo $this->originalLanguageCode; ?>">
+                <?php echo $this->html; ?>
+            </div>
+            <?php echo str_replace('alternate-option-0', 'alternate-option-0 active', $alternates); ?>
         </div>
     <?php endif; ?>
+    <script> new HtmlAlternate("block-<?php echo $this->blockId; ?>")</script>
 </div>
