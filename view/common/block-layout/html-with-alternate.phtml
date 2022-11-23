@@ -1,4 +1,5 @@
 <div id="block-<?php echo $this->blockId; ?>" class="alternate-html-block">
+    <?php $pageBaseLang = $this->lang(); ?>
     <div class="alternate-html-block-live sr-only" aria-live="polite"></div>
     <?php if (count($this->alternates) > 0): ?>
         <?php
@@ -31,23 +32,29 @@
             // build the alternates html
             $alternates = '';
             foreach ($html_elements as $key => $el) {
-                $alternates .= '<div lang="' . $el[0] . '" class="alternate-option-' . $key . '">';
+                $alternates .= '<div class="alternate-option-' . $key . '">';
                 $alternates .= '<div class="html-alternate-type"><p>' . $el[2] . ' - ' . $el[1] . '</p></div>';
-                $alternates .= '<div class="html-alternate-text">' . $el[3] . '</div>';
+                if ($el[0] != $pageBaseLang) {
+                    $alternates .= '<div class="html-alternate-text" lang="' . $el[0] . '">';
+                }
+                else {
+                    $alternates .= '<div class="html-alternate-text">';
+                }
+                $alternates .= $el[3] . '</div>';
                 $alternates .= '</div>';
             }
         ?>
 
         <div class="alternate-html-elements-first">
             <?php echo $select; ?>
-            <div class="alternate-option-original active" lang="<?php echo $this->originalLanguageCode; ?>">
+            <div class="alternate-option-original active"<?php if ($this->originalLanguageCode != $pageBaseLang) {' lang="' . $this->originalLanguageCode . '"';} ?>>
                 <?php echo $this->html; ?>
             </div>
             <?php echo $alternates; ?>
         </div>
         <div class="alternate-html-elements-second">
             <?php echo $selectSecond; ?>
-            <div class="alternate-option-original" lang="<?php echo $this->originalLanguageCode; ?>">
+            <div class="alternate-option-original"<?php if ($this->originalLanguageCode != $pageBaseLang) {' lang="' . $this->originalLanguageCode . '"';} ?>>
                 <?php echo $this->html; ?>
             </div>
             <?php echo str_replace('alternate-option-0', 'alternate-option-0 active', $alternates); ?>
