@@ -11,8 +11,10 @@ use Laminas\Form\FormElementManager\FormElementManagerV3Polyfill as FormElementM
 use Omeka\Entity\SitePageBlock;
 use Omeka\Stdlib\HtmlPurifier;
 use Omeka\Stdlib\ErrorStore;
-use Laminas\Form\Element\Textarea;
+use Laminas\Form\Element\Checkbox;
 use Laminas\Form\Element\Select;
+use Laminas\Form\Element\Text;
+use Laminas\Form\Element\Textarea;
 use Laminas\View\Renderer\PhpRenderer;
 
 class HtmlWithAlternate extends AbstractBlockLayout
@@ -51,6 +53,9 @@ class HtmlWithAlternate extends AbstractBlockLayout
 
         // find any newly created alternates
         foreach ($data as $key => $val) {
+            if (preg_match("/alternate_html_title_([0-9]+)/", $key)) {
+                $data[$key] = $val;
+            }
             if (preg_match("/alternate_html_language_([0-9]+)/", $key)) {
                 $data[$key] = $val;
             }
@@ -74,13 +79,26 @@ class HtmlWithAlternate extends AbstractBlockLayout
                          SitePageRepresentation $page = null, SitePageBlockRepresentation $block = null
     ) {
 
+        $textareaTitle = new Text("o:block[__blockIndex__][o:data][html_title]");
+        $textareaTitle->setAttribute('class', 'html-alternate-original-title');
+        $textareaTitle->setLabel('Title');
+
         $textarea_language = new Select('o:block[__blockIndex__][o:data][html_language]');
         $textarea_language->setValueOptions($this->alternateLanguageList)->setValue($this->default_language);
         $textarea_language->setLabel('Select original language');
 
+        $displayAlternateBlock = new Checkbox("o:block[__blockIndex__][o:data][display_alternate_block]");
+        $displayAlternateBlock->setLabel('Show Alternates in separate area?');
+        $displayAlternateBlock->setCheckedValue("yes");
+        $displayAlternateBlock->setUncheckedValue("no");
+
         $textarea = new Textarea("o:block[__blockIndex__][o:data][html]");
         $textarea->setAttribute('class', 'block-html full wysiwyg');
         $textarea->setAttribute('rows',20);
+
+        $title_template = new Text("o:block[__blockIndex__][o:data][alternate_html_title_{idx}]");
+        $title_template->setAttribute('class', 'html-alternate-title');
+        $title_template->setLabel('Title');
 
         $type_template = new Select('o:block[__blockIndex__][o:data][alternate_html_type_{idx}]');
         $type_template->setValueOptions($this->alternateTypeList)->setValue($this->type_default);
@@ -99,10 +117,22 @@ class HtmlWithAlternate extends AbstractBlockLayout
         $alternates = [];
         $alternate_languages = [];
         $alternate_types = [];
+        $alternate_titles = [];
 
         if ($block) {
+            $textarea_language->setAttribute('value', $block->dataValue('html_language'));
             $textarea->setAttribute('value', $block->dataValue('html'));
+            $textareaTitle->setAttribute('value', $block->dataValue('html_title'));
+            $displayAlternateBlock->setAttribute('value', $block->dataValue('display_alternate_block'));
+
             foreach ($block->data() as $key => $val) {
+                if (preg_match("/alternate_html_title_([0-9]+)/", $key)) {
+                    ${$key} = new Text("o:block[__blockIndex__][o:data][" . $key . "]");
+                    ${$key}->setAttribute('class', 'html-alternate-title');
+                    ${$key}->setLabel('Title');
+                    ${$key}->setAttribute('value', $block->dataValue("{$key}"));
+                    array_push($alternate_titles, $view->formRow(${$key}));
+                }
                 if (preg_match("/alternate_html_language_([0-9]+)/", $key)) {
                     ${$key} = new Select("o:block[__blockIndex__][o:data][" . $key . "]");
                     ${$key}->setLabel('Select alternate language');
@@ -133,10 +163,14 @@ class HtmlWithAlternate extends AbstractBlockLayout
             'site-admin/block-layout/html-with-alternate.phtml',
             [
                 'htmlform' => $view->formRow($textarea),
+                'htmlformTitle' => $view->formRow($textareaTitle),
                 'selectform' => $view->formRow($textarea_language),
+                'displayAlternateBlock' => $view->formRow($displayAlternateBlock),
                 'typeTemplate' => $view->formRow($type_template),
                 'languageSelectTemplate' => $view->formRow($language_select_template),
+                'titleTemplate' => $view->formRow($title_template),
                 'alternateTemplate' => $view->formRow($textarea_alternate_template),
+                'alternateTitles' => $alternate_titles,
                 'alternateTypes' => $alternate_types,
                 'alternateLanguages' => $alternate_languages,
                 'alternates' => $alternates,
@@ -160,8 +194,12 @@ class HtmlWithAlternate extends AbstractBlockLayout
         $alternate_types = [];
         $alternate_languages = [];
         $alternate_language_codes = [];
+        $alternate_titles = [];
 
         foreach ($data as $key => $val) {
+            if (preg_match("/alternate_html_title_([0-9]+)/", $key)) {
+                array_push($alternate_titles, $val);
+            }
             if (preg_match("/alternate_html_language_([0-9]+)/", $key)) {
                 array_push($alternate_language_codes, $val);
                 array_push($alternate_languages, $this->alternateLanguageList[$val]);
@@ -177,9 +215,12 @@ class HtmlWithAlternate extends AbstractBlockLayout
             'common/block-layout/html-with-alternate.phtml',
             [
                 'html' => $data['html'],
+                'htmlTitle' => $data['html_title'],
                 'originalLanguageCode' => $data['html_language'],
+                'displayAlternateBlock' => $data['display_alternate_block'],
                 'originalLanguage' => $this->alternateLanguageList[$data['html_language']],
                 'alternates' => $alternates,
+                'alternateTitles' => $alternate_titles,
                 'alternateTypes' => $alternate_types,
                 'alternateLanguageCodes' => $alternate_language_codes,
                 'alternateLanguages' => $alternate_languages,

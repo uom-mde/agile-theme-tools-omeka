@@ -1,4 +1,4 @@
-<div id="block-<?php echo $this->blockId; ?>" class="alternate-html-block">
+<div id="block-<?php echo $this->blockId; ?>" class="alternate-html-block<?php if ($this->displayAlternateBlock == 'yes'): ?> two-column-alternate<?php endif; ?>">
     <?php $pageBaseLang = $this->lang(); ?>
     <div class="alternate-html-block-live sr-only" aria-live="polite"></div>
     <?php if (count($this->alternates) > 0): ?>
@@ -8,14 +8,14 @@
             $html_elements = [];
             foreach ($this->alternates as $key => $alternate) {
                 $options[$key] = [$this->alternateTypes[$key], $this->alternateLanguages[$key]];
-                $html_elements[$key] = [$this->alternateLanguageCodes[$key], $this->alternateLanguages[$key], $this->alternateTypes[$key], $alternate];
+                $html_elements[$key] = [$this->alternateLanguageCodes[$key], $this->alternateLanguages[$key], $this->alternateTypes[$key], $this->alternateTitles[$key], $alternate];
             }
         ?>
         <?php 
             // build the select mechanism to toggle between alternates
-            if (count($options) > 1) {
-                $select = '<div>';
-                $select .= '<label for="alternate-html-toggle-' . $this->blockId . '">' . $this->translate('Choose view') . '</label>';
+            if (count($options) > 0) {
+                $select = '<div class="switch-alternate-html">';
+                $select .= '<label for="alternate-html-toggle-' . $this->blockId . '" class="sr-only">' . $this->translate('Choose view') . '</label>';
                 $select .= '<select id="alternate-html-toggle-' . $this->blockId . '" name="alternate-html-toggle-' . $this->blockId .'">';
                 $select .= '<option value="alternate-option-original" selected>Original' . ' - ' . $this->originalLanguage . '</option>';
                     foreach ($options as $key => $option) {
@@ -33,14 +33,14 @@
             $alternates = '';
             foreach ($html_elements as $key => $el) {
                 $alternates .= '<div class="alternate-option-' . $key . '">';
-                $alternates .= '<div class="html-alternate-type"><p>' . $el[2] . ' - ' . $el[1] . '</p></div>';
                 if ($el[0] != $pageBaseLang) {
                     $alternates .= '<div class="html-alternate-text" lang="' . $el[0] . '">';
                 }
                 else {
                     $alternates .= '<div class="html-alternate-text">';
                 }
-                $alternates .= $el[3] . '</div>';
+                $alternates .= '<span class="alternate-title">' . $el[3] . '</span>';
+                $alternates .= '<div class="alternate-html-content">' . $el[4] . '</div></div>';
                 $alternates .= '</div>';
             }
         ?>
@@ -48,17 +48,25 @@
         <div class="alternate-html-elements-first">
             <?php echo $select; ?>
             <div class="alternate-option-original active"<?php if ($this->originalLanguageCode != $pageBaseLang) {' lang="' . $this->originalLanguageCode . '"';} ?>>
-                <?php echo $this->html; ?>
+                <?php if (strlen($this->htmlTitle) > 0): ?>
+                    <span class="alternate-title"><?php echo $this->htmlTitle; ?></span>
+                <?php endif; ?>
+                <div class="alternate-html-content"><?php echo $this->html; ?></div>
             </div>
             <?php echo $alternates; ?>
         </div>
-        <div class="alternate-html-elements-second">
-            <?php echo $selectSecond; ?>
-            <div class="alternate-option-original"<?php if ($this->originalLanguageCode != $pageBaseLang) {' lang="' . $this->originalLanguageCode . '"';} ?>>
-                <?php echo $this->html; ?>
+        <?php if ($this->displayAlternateBlock == 'yes'): ?>
+            <div class="alternate-html-elements-second">
+                <?php echo $selectSecond; ?>
+                <div class="alternate-option-original"<?php if ($this->originalLanguageCode != $pageBaseLang) {' lang="' . $this->originalLanguageCode . '"';} ?>>
+                    <?php if (strlen($this->htmlTitle) > 0): ?>
+                        <span class="alternate-title"><?php echo $this->htmlTitle; ?></span>
+                    <?php endif; ?>
+                    <div class="alternate-html-content"><?php echo $this->html; ?></div>
+                </div>
+                <?php echo str_replace('alternate-option-0', 'alternate-option-0 active', $alternates); ?>
             </div>
-            <?php echo str_replace('alternate-option-0', 'alternate-option-0 active', $alternates); ?>
-        </div>
+        <?php endif; ?>
     <?php endif; ?>
     <script> new HtmlAlternate("block-<?php echo $this->blockId; ?>")</script>
 </div>

@@ -3,7 +3,9 @@
     with a mechanism to swap between alternates if more than one is provided.</p>
 <div id="html-with-alternate-original">
     <?php echo $this->selectform; ?>
+    <?php echo $this->htmlformTitle; ?>
     <?php echo $this->htmlform; ?>
+    <?php echo $this->displayAlternateBlock; ?>
 </div>
 <div id="html-with-alternate-templates-wrapper">
     <div class="html-with-alternate-wrapper html-alternate-templates">
@@ -13,6 +15,9 @@
             </div>
             <div class="html-with-alternate-select-template">
                 <?php echo $this->languageSelectTemplate; ?>
+            </div>
+            <div class="html-with-alternate-title-template">
+                <?php echo $this->titleTemplate; ?>
             </div>
             <div class="html-with-alternate-alternate-template">
                 <?php echo $this->alternateTemplate; ?>
@@ -29,6 +34,7 @@
             <div class="alternates-grid">
                 <div><?php echo $alternateTypes[$key]; ?></div>
                 <div><?php echo $alternateLanguages[$key]; ?></div>
+                <div><?php echo $alternateTitles[$key]; ?></div>
                 <div><?php echo $alternate; ?></div>
                 <div class="html-with-alternate-remove"><button class="html-with-alternate-remove-alternate">Remove</button></div>
             </div>

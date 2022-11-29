@@ -13,10 +13,12 @@ class HtmlAlternate {
 
     updateAria() {
         this.ariaLive.html('Switched to new alternate')
+
     }
 
     swapVisibleAlternate(activeAlternate, currentView) {
-        currentView.find('[class^=alternate-option-]').removeClass('active')
-        currentView.find('.' + activeAlternate).addClass('active')
+        currentView.find('[class^=alternate-option-]').removeClass('active').attr('aria-hidden','true')
+        currentView.find('.' + activeAlternate).addClass('active').attr('aria-hidden','false')
+        
     }
 }
