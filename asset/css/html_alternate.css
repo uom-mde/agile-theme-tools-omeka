@@ -23,10 +23,10 @@ div[class^=alternate-option-].active {
 }
 
 div[class^=alternate-option-].active * {
-    height: unset;
-    margin: unset;
-    padding: unset;
-    line-height: unset;
+    height: revert;
+    margin: revert;
+    padding: revert;
+    line-height: revert;
 }
 
 .sr-only {
