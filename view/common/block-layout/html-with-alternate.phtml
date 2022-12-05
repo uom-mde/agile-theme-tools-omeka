@@ -49,7 +49,7 @@
             <?php echo $select; ?>
             <div class="alternate-option-original active"<?php if ($this->originalLanguageCode != $pageBaseLang) {' lang="' . $this->originalLanguageCode . '"';} ?>>
                 <?php if (strlen($this->htmlTitle) > 0): ?>
-                    <span class="alternate-title"><?php echo $this->htmlTitle; ?></span>
+                    <h3 class="alternate-title"><?php echo $this->htmlTitle; ?></h3>
                 <?php endif; ?>
                 <div class="alternate-html-content"><?php echo $this->html; ?></div>
             </div>
@@ -60,7 +60,7 @@
                 <?php echo $selectSecond; ?>
                 <div class="alternate-option-original"<?php if ($this->originalLanguageCode != $pageBaseLang) {' lang="' . $this->originalLanguageCode . '"';} ?>>
                     <?php if (strlen($this->htmlTitle) > 0): ?>
-                        <span class="alternate-title"><?php echo $this->htmlTitle; ?></span>
+                        <h3 class="alternate-title"><?php echo $this->htmlTitle; ?></h3>
                     <?php endif; ?>
                     <div class="alternate-html-content"><?php echo $this->html; ?></div>
                 </div>
