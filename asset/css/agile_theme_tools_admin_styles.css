@@ -1,3 +1,5 @@
+/* slideshow */
+
 .slideshow-options {
   margin-bottom: 2rem;
 }
@@ -24,4 +26,35 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
+}
+
+/* html with alternates */
+#html-with-alternate-templates-wrapper {
+  display: none;
+}
+
+#html-with-alternate-wrapper label {
+  display: block;
+}
+
+#html-with-alternate-wrapper select {
+  width: 50%;
+}
+
+.html-with-alternate-remove {
+  margin-top: 1rem;
+  text-align: right;
+}
+
+#add-html-with-alternate-alternate {
+  margin-top: 1rem;
+}
+
+.html-with-alternate-wrapper .field .field-meta, 
+.html-with-alternate-wrapper .field .inputs {
+  width: 100%;
+}
+
+.alternates-grid {
+  border-bottom: 1px solid #ddd;
 }
