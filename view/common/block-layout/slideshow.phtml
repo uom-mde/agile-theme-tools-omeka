@@ -1,5 +1,5 @@
-<div id="block-<?php echo $this->blockId; ?>" class="region <?php echo $this->regionClass; ?> <?php echo $hasAudioAttachment ? 'slideshow-with-audio' : 'slideshow-block'; ?>" data-target-region-id="<?php echo $this->targetID; ?>">
-    <div class="slideshow">
+<div id="block-<?php echo $this->blockId; ?>" class="full-width-css grid-x grid-padding-x region <?php echo $this->regionClass; ?> <?php echo $hasAudioAttachment ? 'slideshow-with-audio' : 'slideshow-block'; ?>" data-target-region-id="<?php echo $this->targetID; ?>">
+    <div class="slideshow grid-container">
         <?php if ($useTitleSlide): ?>
             <div class="item resource introduction <?php foreach ($attachmentOptions as $attachmentOption => $defaultVal) {echo ' slide-' . $attachmentOption . '-' . ${'attachment' . ucfirst($attachmentOption)}[0];}?>">
                 <figure>
@@ -11,9 +11,9 @@
                         ?>
                     </div>
                 </figure>
-                <div class='slide-contents'>
+                <div class='slide-contents grid-container flex-container flex-dir-column'>
                     <?php if (!empty($titleSlideTitle)): ?>
-                        <h3><?php echo $titleSlideTitle; ?></h3>
+                        <h3 class="align-center"><?php echo $titleSlideTitle; ?></h3>
                     <?php endif; ?>
                     <?php if (!empty($titleSlideIntro)): ?>
                         <?php echo $titleSlideIntro; ?>
@@ -41,11 +41,11 @@
                         </figure>
                     <?php endif; ?>
                 <?php endif; ?>
-                <div class="slide-contents">
+                <div class="slide-contents grid-container">
                     <?php if ($showTitleOption == 'item_title'): ?>
-                        <h3><?php echo $item->link($item->displayTitle()); ?></h3>
+                        <h3 class="padding-top-1 large-padding-top-2"><?php echo $item->link($item->displayTitle()); ?></h3>
                     <?php elseif ($showTitleOption == 'file_name'): ?>
-                        <h3><?php echo $media->displayTitle(); ?></h3>
+                        <h3 class="padding-top-1 large-padding-top-2"><?php echo $media->displayTitle(); ?></h3>
                     <?php endif; ?>
                     <?php if ($attachment->caption()): ?>
                         <?php echo $attachment->caption(); ?>
@@ -70,5 +70,3 @@
         </div>
     <?php endif; ?>
 </div>
-
-

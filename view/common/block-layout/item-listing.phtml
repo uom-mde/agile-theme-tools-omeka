@@ -1,48 +1,54 @@
-<div id="block-<?php echo $this->blockId; ?>" class="item-listing region <?php echo $this->regionClass; ?>" data-target-region-id="<?php echo $this->targetID; ?> ">
+<?php
+    $itemCount = count($this->attachments);
+?>
+
+<div id="block-<?php echo $this->blockId; ?>" class="full-width-css item-listing-with-introduction grid-y grid-margin-y small-padding-0 medium-padding-1 large-padding-2 region <?php echo $this->regionClass; ?>" data-target-region-id="<?php echo $this->targetID; ?> ">
     <?php if ($this->hasTitle || $this->hasIntroduction): ?>
-        <div class='title-area'>
+        <div class='item-listing-title-area grid-container padding-bottom-2 flex-container flex-dir-column align-middle'>
             <?php if ($this->hasTitle): ?>
-                <h2><?php echo $this->title; ?></h2>
+                <h3 class="h1"><?php echo $this->title; ?></h3>
             <?php endif; ?>
             <?php if ($this->hasIntroduction): ?>
-                <div class='block-introduction'>
+                <div class='block-introduction medium-padding-2'>
                     <?php echo $this->introduction; ?>
                 </div>
             <?php endif; ?>
             <?php if ($this->hasButton): ?>
-                <?php printf('<a class="btn" href="%s" alt="%s">%s</a>',$this->buttonPath,$this->buttonText,$this->buttonText); ?>
+                <button class="hollow button secondary large"><?php printf('<a class="btn" href="%s" alt="%s">%s</a>',$this->buttonPath,$this->buttonText,$this->buttonText); ?></button>
             <?php endif; ?>
         </div>
     <?php endif; ?>
 
-    <?php foreach ($attachments as $attachment): ?>
-        <div class="item resource">
-            <?php
-            $item = $attachment->item();
-            if ($item):
-                ?>
+    <div class="grid-x grid-margin-x flex-container align-spaced">
+        <?php foreach ($attachments as $attachment): ?>
+            <div class="item-listing-item item resource flex-container flex-dir-column align-middle item-count-<?php echo $itemCount; ?> small-margin-bottom-1 medium-margin-bottom-2">
                 <?php
-                $title = $this->plugin('escapeHtml')($item->displayTitle());
-                $media = $attachment->media() ?: $item->primaryMedia();
-                if ($media):
-                    $image = preg_match('/alt=""/', $this->thumbnail($media, $this->thumbnailType)) == 1 ? $item->linkRaw($this->thumbnail($media, $this->thumbnailType, ['alt' => $title])) : $item->linkRaw($this->thumbnail($media, $this->thumbnailType));
-                    echo $image;
-                endif;
-                ?>
-                <?php $showTitleOption = $this->showTitleOption; ?>
-                <?php if ($showTitleOption == 'item_title'): ?>
-                <h3><?php echo $item->link($item->displayTitle()); ?></h3>
-            <?php elseif ($showTitleOption == 'file_name'): ?>
-                <h3><?php echo $media->displayTitle(); ?></h3>
-            <?php endif; ?>
-            <?php endif; ?>
+                $item = $attachment->item();
+                if ($item):
+                    ?>
+                    <?php
+                    $title = $this->plugin('escapeHtml')($item->displayTitle());
+                    $media = $attachment->media() ?: $item->primaryMedia();
+                    if ($media):
+                        $image = preg_match('/alt=""/', $this->thumbnail($media, $this->thumbnailType)) == 1 ? $item->linkRaw($this->thumbnail($media, $this->thumbnailType, ['alt' => $title])) : $item->linkRaw($this->thumbnail($media, $this->thumbnailType));
+                        echo $image;
+                    endif;
+                    ?>
+                    <?php $showTitleOption = $this->showTitleOption; ?>
+                    <?php if ($showTitleOption == 'item_title'): ?>
+                    <h3><?php echo $item->link($item->displayTitle()); ?></h3>
+                <?php elseif ($showTitleOption == 'file_name'): ?>
+                    <h3><?php echo $media->displayTitle(); ?></h3>
+                <?php endif; ?>
+                <?php endif; ?>
 
-            <?php
-            $caption = $attachment->caption();
-            if ($caption):
-                ?>
-                <div class="caption"><?php echo $caption; ?></div>
-            <?php endif; ?>
-        </div>
-    <?php endforeach; ?>
+                <?php
+                $caption = $attachment->caption();
+                if ($caption):
+                    ?>
+                    <div class="caption padding-1 xlarge-padding-2 xlarge-padding-horizontal-3 font-wide flex-child-grow"><?php echo $caption; ?></div>
+                <?php endif; ?>
+            </div>
+        <?php endforeach; ?>
+    </div>
 </div>

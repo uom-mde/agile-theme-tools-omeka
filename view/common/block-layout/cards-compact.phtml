@@ -2,9 +2,9 @@
 $itemCount = count($this->pages);
 
 ?>
-<div id="block-<?php echo $this->blockId; ?>" class="compact-card-listing item-count-<?php echo $itemCount; ?> <?php echo $this->regionClass; ?> <?php echo $this->classes ?>" data-target-region-id="<?php echo $this->targetID; ?>">
+<div id="block-<?php echo $this->blockId; ?>" class="flex-container flex-dir-row grid-x grid-margin-x grid-margin-y compact-card-listing small-padding-vertical-1 large-padding-vertical-2 item-count-<?php echo $itemCount; ?> <?php echo $this->regionClass; ?> <?php echo $this->classes ?>" data-target-region-id="<?php echo $this->targetID; ?>">
     <?php if ($this->hasTitle || $this->hasIntroduction): ?>
-        <div class='title-area'>
+        <div class='title-area small-12'>
             <?php if ($this->hasTitle): ?>
                 <h2><?php echo $this->title; ?></h2>
             <?php endif; ?>
@@ -20,7 +20,7 @@ $itemCount = count($this->pages);
     <?php endif; ?>
     <?php if ($this->hasPages): ?>
         <?php foreach($this->pages as $page): ?>
-            <div class="card-compact">
+            <div class="cell card-compact medium-6 large-4 flex-container flex-dir-column radius bordered shadow">
                 <?php if ($page['hasEmbeddedBlocks'] && array_key_exists('representativeImage',$page['embeddedBlocks'])): ?>
                     <?php echo $page['embeddedBlocks']['representativeImage'][0]; ?>
                 <?php endif; ?>

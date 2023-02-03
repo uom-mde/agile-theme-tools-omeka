@@ -1,44 +1,32 @@
-<div id="block-<?php echo $this->blockId; ?>" class="site-promo region <?php echo $this->regionClass; ?>" data-target-region-id="<?php echo $this->targetID; ?>">
-    <div>
-        <?php foreach ($attachments as $attachment): ?>
-            <?php
-                $item = $attachment->item();
+<div id="block-<?php echo $this->blockId; ?>" class="site-promo grid-x grid-padding-x medium-6 flex-child-grow small-padding-vertical-1 large-padding-vertical-2 region <?php echo $this->regionClass; ?>" data-target-region-id="<?php echo $this->targetID; ?>">
+    <?php foreach ($attachments as $attachment): ?>
+        <?php
+            $item = $attachment->item();
+        ?>
+        <div class="site-image large-6">
+            <?php if ($item):
+                $title = $this->plugin('escapeHtml')($item->displayTitle());
+                $media = $attachment->media() ?: $item->primaryMedia();
+                if ($media):
+                $image = preg_match('/alt=""/', $this->thumbnail($media, 'large')) == 1 ? $this->thumbnail($media, 'large', ['alt' => $title]) : $this->thumbnail($media, 'large');
             ?>
-            <div class="site-image">
-                <?php if ($item):
-                    $title = $this->plugin('escapeHtml')($item->displayTitle());
-                    $media = $attachment->media() ?: $item->primaryMedia();
-                    if ($media):
-                    $image = preg_match('/alt=""/', $this->thumbnail($media, 'medium')) == 1 ? $this->thumbnail($media, 'medium', ['alt' => $title]) : $this->thumbnail($media, 'medium');
-                ?>
-                    <a href="<?php echo $this->baseUrl . $this->siteSelectLink; ?>">
-                        <figure>
-                            <?php echo $image; ?>
-                            <?php if ($attachment->caption()): ?>
-                              <figcaption><?php echo $attachment->caption(); ?></figcaption>
-                            <?php endif; ?>
-                        </figure>
-                    </a>
-                    <?php endif; ?>
+                    <figure>
+                        <?php echo $image; ?>
+                        <?php if ($attachment->caption()): ?>
+                        <figcaption class="orbit-caption caption"><?php echo $attachment->caption(); ?></figcaption>
+                        <?php endif; ?>
+                    </figure>
                 <?php endif; ?>
-            </div>
-        <?php endforeach; ?>
-        <h2><a href="<?php echo $this->baseUrl . $this->siteSelectLink; ?>"><?php echo $this->siteSelectTitle; ?></a></h2>
+            <?php endif; ?>
+        </div>
+    <?php endforeach; ?>
+    <div class="site-promo-text large-6 flex-container flex-dir-column padding-1 medium-padding-2">
+        <h3 class="h2"><a href="<?php echo $this->baseUrl . $this->siteSelectLink; ?>"><?php echo $this->siteSelectTitle; ?></a></h3>
         <?php if($this->containsHarmfulContent == 1): ?>
             <div class="site-promo-harmful-content-flag">
-                <p>May contain harmful content</p>
+                <h3>May contain harmful content</h3>
             </div>
         <?php endif; ?>
-        <?php echo $this->html; ?>
-        <?php if($this->containsHarmfulContent == 1): ?>
-            <div class="site-promo-harmful-content">
-                <?php echo $this->themeSetting('harmful_content'); ?>
-                <?php if ($this->themeSetting('harmful_content') && strlen($this->themeSetting('harmful_content')) > 0): ?>
-                    <p>May contain harmful content. <?php echo $this->harmfulContent; ?></p>
-                <?php else: ?>
-                    <p>May contain harmful content.</p>
-                <?php endif; ?>
-            </div>
-        <?php endif; ?>
+        <p><?php echo $this->html; ?></p>
     </div>
 </div>

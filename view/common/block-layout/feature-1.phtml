@@ -11,32 +11,34 @@ if ($itemCount % 2 == 1) {
     $itemCount++;
 }
 ?>
-<div id="feature-1" class="region callout-image-grid item-count-<?php echo $itemCount; ?> <?php echo $this->regionClass; ?> block-<?php echo $this->blockId; ?> <?php echo $this->classes ?>" data-target-region-id="<?php echo $this->targetID; ?>">
-    <?php if ($this->hasTitle || $this->hasIntroduction): ?>
-        <div class='title-area'>
-            <?php if ($this->hasTitle): ?>
-                <h2><?php echo $this->title; ?></h2>
-            <?php endif; ?>
-            <?php if ($this->hasIntroduction): ?>
-                <div class='block-introduction'>
-                    <?php echo $this->introduction; ?>
-                </div>
-            <?php endif; ?>
-            <?php if ($this->hasButton): ?>
-                <?php printf('<a class="btn" href="%s" alt="%s">%s</a>',$this->buttonPath,$this->buttonText,$this->buttonText); ?>
-            <?php endif; ?>
-        </div>
-    <?php endif; ?>
-    <?php if ($this->hasPages): ?>
-      <div class='cards'>
-        <?php foreach($this->pages as $page): ?>
-            <div class="card-compact">
-                <?php if ($page['hasEmbeddedBlocks'] && array_key_exists('representativeImage',$page['embeddedBlocks'])): ?>
-                    <?php echo $page['embeddedBlocks']['representativeImage'][0]; ?>
+<div id="feature-1" class="full-width-css flex-container small-padding-vertical-1 large-padding-vertical-2 region callout-image-grid item-count-<?php echo $itemCount; ?> <?php echo $this->regionClass; ?> block-<?php echo $this->blockId; ?> <?php echo $this->classes ?>" data-target-region-id="<?php echo $this->targetID; ?>">
+    <div class="grid-container grid-x grid-padding-x">
+        <?php if ($this->hasTitle || $this->hasIntroduction): ?>
+            <div class='large-7 title-area flex-container flex-dir-column align-middle padding-1'>
+                <?php if ($this->hasTitle): ?>
+                    <h2 class="padding-1"><?php echo $this->title; ?></h2>
                 <?php endif; ?>
-                <h3><a href='<?php echo $page['o:url']; ?>'><?php echo $page['o:title']; ?></a></h3>
+                <?php if ($this->hasIntroduction): ?>
+                    <div class='block-introduction padding-1'>
+                        <?php echo $this->introduction; ?>
+                    </div>
+                <?php endif; ?>
+                <?php if ($this->hasButton): ?>
+                    <?php printf('<a class="button rounded margin-1" href="%s" alt="%s">%s</a>',$this->buttonPath,$this->buttonText,$this->buttonText); ?>
+                <?php endif; ?>
             </div>
-        <?php endforeach; ?>
-      </div>
-    <?php endif; ?>
+        <?php endif; ?>
+        <?php if ($this->hasPages): ?>
+        <div class='large-5 cards flex-container flex-dir-column'>
+            <?php foreach($this->pages as $page): ?>
+                <div class="card-compact">
+                    <?php if ($page['hasEmbeddedBlocks'] && array_key_exists('representativeImage',$page['embeddedBlocks'])): ?>
+                        <?php echo $page['embeddedBlocks']['representativeImage'][0]; ?>
+                    <?php endif; ?>
+                    <h3><a href='<?php echo $page['o:url']; ?>'><?php echo $page['o:title']; ?></a></h3>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <?php endif; ?>
+    </div>
 </div>

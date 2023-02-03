@@ -1,11 +1,11 @@
-<div id="homepage-splash" class="block-<?php echo $this->blockId; ?> region <?php echo $this->regionClass; ?>" data-target-region-id="<?php echo $this->targetID; ?>">
-    <div class="items">
-        <?php print_r($attachmentScaleValues); ?>
+<div id="homepage-splash" class="full-width-css grid-x grid-padding-x margin-bottom-1 small-order-0 medium-order-1 flex-container block-<?php echo $this->blockId; ?> region <?php echo $this->regionClass; ?>" data-target-region-id="<?php echo $this->targetID; ?>">
+    <div class="large-6 xlarge-7 xxlarge-8 item-listing-image items">
+        
         <?php foreach ($attachments as $key => $attachment): ?>
             <?php
                 $item = $attachment->item();
             ?>
-            <div class="item resource <?php foreach ($attachmentOptions as $attachmentOption => $defaultVal) {echo ' slide-' . $attachmentOption . '-' . ${'attachment' . ucfirst($attachmentOption)}[$key];}?>">
+            <div class="item resource slick-slide-preload <?php foreach ($attachmentOptions as $attachmentOption => $defaultVal) {echo ' slide-' . $attachmentOption . '-' . ${'attachment' . ucfirst($attachmentOption)}[$key];}?>">
                 <?php if ($item):
                     $title = $this->plugin('escapeHtml')($item->displayTitle());
                     $media = $attachment->media() ?: $item->primaryMedia();
@@ -17,7 +17,7 @@
                                 <?php echo $image; ?>
                             </div>
                             <?php if ($attachment->caption()): ?>
-                              <figcaption><?php echo $attachment->caption(); ?></figcaption>
+                              <figcaption class="orbit-caption caption"><?php echo $attachment->caption(); ?></figcaption>
                             <?php endif; ?>
                         </figure>
                     <?php endif; ?>
@@ -27,16 +27,15 @@
     </div>
    
 
-    <div class="item resource introduction">
-        <div class='introductory-text'>
+    <div class="large-6 xlarge-5 xxlarge-4 grid-y grid-padding-y padding-1 medium-padding-2 small-order-1 medium-order-0 title-area background-colour-uom-footer item resource introduction">
+        <div class='flex-container flex-dir-column introductory-text'>
             <?php if (!empty($titleSlideTitle)): ?>
-                <h1><?php echo $titleSlideTitle; ?></h1>
+                <h2 class="h1 padding-bottom-1"><?php echo $titleSlideTitle; ?></h2>
             <?php endif; ?>
             <?php if (!empty($titleSlideIntro)): ?>
-                <?php echo $titleSlideIntro; ?>
+                <p class="padding-1-medium-up"><?php echo $titleSlideIntro; ?></p>
             <?php endif; ?>
         </div>
     </div>
 </div>
-
 

@@ -1,10 +1,12 @@
-<div id="block-<?php echo $this->blockId; ?>" class="quotation">
-    <blockquote>
-        <?php echo $this->html; ?>
-        <?php if (!empty($this->attribution)): ?>
-        <cite>
-            <?php echo $this->attribution; ?>
-        </cite>
-        <?php endif; ?>
-    </blockquote>
-</div>
+<section class="full-width-css background-colour-light-gray">  
+    <div id="block-<?php echo $this->blockId; ?>" class="blockquote-wrapper">
+        <blockquote>
+            <h3><?php echo $this->html; ?></h3>
+            <?php if (!empty($this->attribution)): ?>
+            <cite>
+                <p><?php echo $this->attribution; ?></p>
+            </cite>
+            <?php endif; ?>
+        </blockquote>
+    </div>
+</section>

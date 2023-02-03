@@ -7,6 +7,8 @@ Agile Theme Tools is still in development.
 
 This version is independently maintained and enhanced by Dartmouth Library.
 
+This fork from the University of Manchester is designed for use with its version of the officially supported Foundation S Omeka theme (https://github.com/uom-mde/foundation-s/tree/uom_theme) 
+
 #DEPENDENCIES
 * Agile Theme Tools is dependent on the Alt Text module (https://github.com/zerocrates/AltText ) for versions less than v2.1.0
 
