@@ -19,7 +19,7 @@
         $('.slideshow').each(function(){
           if ($(this).find('.item').length < 1) return;
           if ($(this).find('.item').length > 1) {
-            $(this).not('.slick-initalized').slick(
+            $(this).not('.slick-initialized').slick(
                 {
                   slidesToShow: 1,
                   slidesToScroll: 1,
@@ -37,7 +37,7 @@
             );
           }
           else {
-            $(this).not('.slick-initalized').slick(
+            $(this).not('.slick-initialized').slick(
               {
                 slidesToShow: 1,
                 slidesToScroll: 1,
@@ -112,7 +112,9 @@
 
         $.each(['#homepage-splash', '.section-intro-splash'], function(idx, val) {
           if ($(val).find('.items .item').length > 1) {
-            $(val).find('.items').not('.slick-initalized').slick({
+            const slickItems = $(val).find('.items').not('.slick-initialized');
+            if (slickItems.length > 0) {
+              slickItems.slick({
                 slidesToShow: 1,
                 slidesToScroll: 1,
                 autoplay: true,
@@ -125,24 +127,28 @@
                 prevArrow: "<div class='slick-prev'></div>",
                 nextArrow: "<div class='slick-next'></div>",
                 accessibility: true,
-            });
+              });
+            }
           }
           else {
             $(val).find('.items').addClass('single-carousel');
-            $(val).find('.items').not('.slick-initalized').slick({
-              slidesToShow: 1,
-              slidesToScroll: 1,
-              autoplay: false,
-              autoplaySpeed: 8000,
-              infinite: true,
-              fade: true,
-              cssEase: 'linear',
-              dots: true,
-              arrows: true,
-              prevArrow: "<div class='slick-prev'></div>",
-              nextArrow: "<div class='slick-next'></div>",
-              accessibility: true,
-          });
+            const slickItems = $(val).find('.items').not('.slick-initialized');
+            if (slickItems.length > 0) {
+              slickItems.slick({
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                autoplay: false,
+                autoplaySpeed: 8000,
+                infinite: true,
+                fade: true,
+                cssEase: 'linear',
+                dots: true,
+                arrows: true,
+                prevArrow: "<div class='slick-prev'></div>",
+                nextArrow: "<div class='slick-next'></div>",
+                accessibility: true,
+            });
+          }
         }
       });
     });
