@@ -8,7 +8,7 @@ use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Api\Representation\SitePageRepresentation;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
 use Laminas\Form\Element\Checkbox;
-use Laminas\Form\FormElementManager\FormElementManagerV3Polyfill as FormElementManager;
+use Laminas\Form\FormElementManager as FormElementManager;
 use Omeka\Entity\SitePageBlock;
 use Omeka\File\ThumbnailManager as ThumbnailManager;
 use Omeka\Stdlib\HtmlPurifier;
