@@ -9,7 +9,7 @@ use Omeka\Api\Representation\SitePageRepresentation;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
 use Omeka\Stdlib\HtmlPurifier;
 use Laminas\Form\Element\Textarea;
-use Laminas\Form\FormElementManager\FormElementManagerV3Polyfill as FormElementManager;
+use Laminas\Form\FormElementManager as FormElementManager;
 use Laminas\View\Renderer\PhpRenderer;
 use AgileThemeTools\Form\Element\RegionMenuSelect;
 use Laminas\Form\Element\Text;
