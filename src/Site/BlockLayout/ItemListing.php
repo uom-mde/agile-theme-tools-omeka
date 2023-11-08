@@ -12,7 +12,7 @@ use Omeka\Stdlib\ErrorStore;
 use Omeka\Stdlib\HtmlPurifier;
 use Laminas\Form\Element\Text;
 use Laminas\Form\Element\Textarea;
-use Laminas\Form\FormElementManager\FormElementManagerV3Polyfill as FormElementManager;
+use Laminas\Form\FormElementManager as FormElementManager;
 use Laminas\View\Renderer\PhpRenderer;
 
 class ItemListing extends AbstractBlockLayout

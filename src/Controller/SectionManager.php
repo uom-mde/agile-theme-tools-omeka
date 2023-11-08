@@ -9,7 +9,7 @@ use Omeka\Stdlib\HtmlPurifier;
 use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Api\Representation\SitePageRepresentation;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
-use Laminas\Form\FormElementManager\FormElementManagerV3Polyfill as FormElementManager;
+use Laminas\Form\FormElementManager as FormElementManager;
 use Laminas\Filter\RealPath;
 
 class SectionManager extends AbstractActionController {
